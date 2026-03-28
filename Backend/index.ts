@@ -5,6 +5,7 @@ import { errorHandler, notFound } from './middleware/errorHandler';
 import userRoute from './Routes/users';
 import AdminRoute from './Routes/admin';
 import studentRoute from './Routes/student';
+import teacherRoute from './Routes/teacher';
 
 dotenv.config()
 
@@ -20,7 +21,8 @@ app.use('/admin', AdminRoute)
 
 // student 
 app.use('/student', studentRoute)
-
+// teacher 
+app.use('/teacher', teacherRoute)
 
 app.use(notFound);
 app.use(errorHandler)
