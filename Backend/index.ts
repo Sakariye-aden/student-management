@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import userRoute from './Routes/users';
 import AdminRoute from './Routes/admin';
+import studentRoute from './Routes/student';
 
 dotenv.config()
 
@@ -16,6 +17,9 @@ app.use(express.json())
 app.use('/Auth',userRoute)
 app.use('/Auth',userRoute)
 app.use('/admin', AdminRoute)
+
+// student 
+app.use('/student', studentRoute)
 
 
 app.use(notFound);

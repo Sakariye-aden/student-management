@@ -5,7 +5,7 @@ export interface Iusers extends Document {
   name: string;
   email: string;
   password: string;
-  role: "Admin" | "Teacher" | "Student";
+  role: "principle" | "vice principle" |"dean of student"|"teacher"|"student";
   comparePassword(inputPassword: string): Promise<boolean>;
 }
 
@@ -15,8 +15,8 @@ const userSchema = new Schema<Iusers>({
   password: { type: String, required: true },
   role: {
     type: String,
-    enum: ["Admin", "Teacher", "Student"], // Allowed values for the 'role' field
-    default: "Student", // Default value if not specified
+    enum: ["principle","vice principle","dean of student", "teacher", "student"], // Allowed values for the 'role' field
+    default: "student", // Default value if not specified
   },
 }, { timestamps: true });
 
