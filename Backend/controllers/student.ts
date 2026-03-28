@@ -49,3 +49,35 @@ export const getAllStudents = async (_req:Request, res:Response, next:NextFuncti
       next(error)
    }
 }
+
+// update student info 
+
+export const updateStudentinfo = async (req:Request, res:Response, next:NextFunction)=>{
+  
+   try {
+       const { id } = req.params;
+   
+      const updateOne= await Student.findByIdAndUpdate({_id:id}, req.body, {new: true})
+      
+      return res.status(201).json(updateOne)
+   } catch (error) {
+      next(error)
+   }
+}
+// delete student info 
+
+export const deleteStudentinfo = async (req:Request, res:Response, next:NextFunction)=>{
+  
+   try {
+       const { id } = req.params;
+   
+      const deleteOne= await Student.findByIdAndDelete({_id:id})
+      
+      return res.json({
+         message : "student deleted succesfully",
+         id :deleteOne?._id
+      })
+   } catch (error) {
+      next(error)
+   }
+}
