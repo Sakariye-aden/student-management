@@ -6,6 +6,7 @@ import userRoute from './Routes/users';
 import AdminRoute from './Routes/admin';
 import studentRoute from './Routes/student';
 import teacherRoute from './Routes/teacher';
+import subjectRoute from './Routes/subject';
 
 dotenv.config()
 
@@ -23,6 +24,9 @@ app.use('/admin', AdminRoute)
 app.use('/student', studentRoute)
 // teacher 
 app.use('/teacher', teacherRoute)
+// subject 
+app.use('/subject', subjectRoute);
+
 
 app.use(notFound);
 app.use(errorHandler)
