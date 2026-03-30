@@ -9,6 +9,7 @@ import teacherRoute from './Routes/teacher';
 import subjectRoute from './Routes/subject';
 import planRoute from './Routes/teacherPlan';
 import stdenrollRoute from './Routes/studentenroll';
+import tchenrollRoute from './Routes/teacherenrollment';
 
 dotenv.config()
 
@@ -31,7 +32,9 @@ app.use('/subject', subjectRoute);
 // plan 
 app.use('/plan', planRoute)
 // student enrollment 
-app.use('/studentenrollment', stdenrollRoute)
+app.use('/studentenrollment', stdenrollRoute);
+// teacher enrollment 
+app.use('/teacherenrollment', tchenrollRoute)
 
 
 app.use(notFound);
