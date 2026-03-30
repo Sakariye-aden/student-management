@@ -24,7 +24,6 @@ export const Protect = (req:Iuser, res:Response, next:NextFunction)=>{
         }
 
         const decode = jwt.verify(Token, secret) as dec
-         console.log("decoded",decode);
         
         // const id = decode.id 
 
