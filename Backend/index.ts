@@ -11,6 +11,7 @@ import planRoute from './Routes/teacherPlan';
 import stdenrollRoute from './Routes/studentenroll';
 import tchenrollRoute from './Routes/teacherenrollment';
 import resultRoute from './Routes/result';
+import studentAttendanceRoute from './Routes/studentAttendance';
 
 dotenv.config()
 
@@ -38,9 +39,10 @@ app.use('/studentenrollment', stdenrollRoute);
 app.use('/teacherenrollment', tchenrollRoute)
 
 // result 
-app.use('/result', resultRoute)
+app.use('/result', resultRoute);
 
-
+// student attendance 
+app.use('/attendance', studentAttendanceRoute);
 
 
 app.use(notFound);
