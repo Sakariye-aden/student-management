@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { takingStudentattendance } from '../controllers/studentattendance';
+import { takingTeacherattendance } from '../controllers/teacherAttendance';
 
 
 const Route = Router();
