@@ -2,6 +2,9 @@ import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { errorHandler, notFound } from './middleware/errorHandler';
+import cookieParser from "cookie-parser";
+
+// routes 
 import userRoute from './Routes/users';
 import AdminRoute from './Routes/admin';
 import studentRoute from './Routes/student';
@@ -21,6 +24,9 @@ const app = express();
 
 
 app.use(express.json())
+app.use(cookieParser());
+
+
 app.use('/Auth',userRoute)
 app.use('/Auth',userRoute)
 app.use('/admin', AdminRoute)

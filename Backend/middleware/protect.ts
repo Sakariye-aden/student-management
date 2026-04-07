@@ -16,26 +16,26 @@ interface dec {
 export const Protect = async (req:Request, res:Response, next:NextFunction)=>{
 
      try {
-        const Token = req.headers.authorization?.split(' ')[1];
+         const token = req.cookies.authToken; // ✅ read from cookie
 
-        if(!Token){
+        if(!token){
             return res.status(401).json({
-                message : "invalid token."
+                message : "No token provided."
             })
         }
 
-        const decode = jwt.verify(Token, secret) as dec
+        const decode = jwt.verify(token, secret) as dec
         
         // const id = decode.id 
        const user = await User.findById({_id: decode.id}).select("-password")
         
         // console.log("user", user);   
-          if (!user) {
-      return res.status(404).json({ message: "User not found." });
-    }
+     if (!user) {
+       return res.status(404).json({ message: "User not found." });
+    } 
 
     (req as any ).user = user;
-        // console.log('user', req.user);
+    
         next()
      } catch (error) {
         next(error)
