@@ -81,7 +81,7 @@ const RegisterForm = () => {
     }
 
     return (
-        <Card className="w-full border-border">
+        <Card className="w-full bg-card rounded-md">
             <CardHeader className="space-y-1 pb-4">
                 <CardTitle className="text-xl text-center">Create an account</CardTitle>
                 <CardDescription className={"text-center"}>
@@ -97,10 +97,11 @@ const RegisterForm = () => {
                             )
                         }
                         <div className='space-y-2'>
-                            <div className='text-sm font-medium text-left'>
+                            <div className='text-sm  font-medium text-left'>
                                 Full Name
                             </div>
                             <Input
+                               className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                                 name="name"
                                 placeholder="John Doe"
                                 required
@@ -113,6 +114,7 @@ const RegisterForm = () => {
                                 Email
                             </div>
                             <Input name="email"
+                             className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                                 placeholder="email@email.com"
                                 required
                                 value={formValues.email}
@@ -123,6 +125,7 @@ const RegisterForm = () => {
                                 Password
                             </div>
                             <Input
+                             className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                                 name="password"
                                 type={"password"}
                                 placeholder="*****"
@@ -136,6 +139,7 @@ const RegisterForm = () => {
                                 Confirm Password
                             </div>
                             <Input
+                              className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                                 name="confirmPassword"
                                 type={"password"}
                                 placeholder="******"
@@ -145,15 +149,15 @@ const RegisterForm = () => {
                             />
                         </div>
 
-                        <div className='py-4'>
-                            <Button type="submit" className={"w-full cursor-pointer"}>
+                        <div className='py-4 '>
+                            <Button type="submit" className={"w-full cursor-pointer p-4 rounded-md"}>
                                 {registerMutation.isPending ? (<span className='flex items-center gap-2'><LoaderCircle /> Creating account... </span>) : ("Create Account")}
                             </Button>
                         </div>
                     </CardContent>
 
                     <CardFooter className={"flex justify-center pt-0"}>
-                        <div className='text-center text-sm'>
+                        <div className='text-center text-sm py-2'>
                             Already have an  account ? <a onClick={() => navigate('/login')} className='text-primary hover:underline cursor-pointer'> Sign in</a>
                         </div>
                     </CardFooter>

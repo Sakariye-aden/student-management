@@ -1,6 +1,6 @@
 import { Navigate, Route, Routes } from "react-router"
-import LoginPage from "./pages/login/LoginPage"
-import RegisterPage from "./pages/login/RegisterPage"
+import LoginPage from "./pages/Auth/LoginPage"
+import RegisterPage from "./pages/Auth/RegisterPage"
 
 
 
