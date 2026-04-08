@@ -44,7 +44,7 @@ const LoginForm = () => {
      //  mutatation 
      const loginMutation = useMutation({
        mutationFn : async (credentials:FormValueType) => {
-           const response = await api.post('/auth/login', credentials)
+           const response = await api.post('/Auth/login', credentials)
            return response.data
        },
        onSuccess:(data)=>{

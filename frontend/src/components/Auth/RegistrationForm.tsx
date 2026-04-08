@@ -35,7 +35,7 @@ const RegisterForm = () => {
 
     const registerMutation = useMutation({
         mutationFn: async (userData: Omit<FormValueType, "confirmPassword">) => {
-            const response = await api.post('/auth/register', userData)
+            const response = await api.post('/Auth/register', userData)
             return response.data
         },
         onSuccess: () => {

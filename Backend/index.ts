@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import { errorHandler, notFound } from './middleware/errorHandler';
 import cookieParser from "cookie-parser";
-
+import cors from 'cors'
 // routes 
 import userRoute from './Routes/users';
 import AdminRoute from './Routes/admin';
@@ -26,9 +26,15 @@ const app = express();
 app.use(express.json())
 app.use(cookieParser());
 
+app.use(cors(
+       {
+        origin:['http://localhost:5173'],
+        credentials: true,       
+       }
+    ))
 
-app.use('/Auth',userRoute)
-app.use('/Auth',userRoute)
+app.use('/api/Auth',userRoute)
+app.use('/api/Auth',userRoute)
 app.use('/admin', AdminRoute)
 
 // student 
