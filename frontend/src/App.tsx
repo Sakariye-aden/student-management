@@ -18,6 +18,7 @@ import DeanDashboard from "./pages/Dean of student/Dashboard";
 import DeanHomePage from "./pages/Dean of student/HomePage";
 import StudentAttendance from "./pages/Dean of student/Student";
 import TeacherAttendance from "./pages/Dean of student/Teacher";
+import Roles from "./pages/vice principle/Roles";
 
 function App() {
   return (
@@ -52,6 +53,7 @@ function App() {
           <Route path="subjects" element={<VpSubjects/>} />
           <Route path="enrolls" element={<Enrollments />} />
           <Route path="results" element={<VpResults/>} />
+          <Route path="roles" element={<Roles/>} />
         </Route>
       </Route>
 
