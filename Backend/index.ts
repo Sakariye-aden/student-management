@@ -39,23 +39,23 @@ app.use('/api/Auth',userRoute)
 app.use('/admin', AdminRoute)
 app.use('/api/dashboard', DashboardRoute)
 // student 
-app.use('/student', studentRoute)
+app.use('/api/student', studentRoute)
 // teacher 
-app.use('/teacher', teacherRoute)
+app.use('/api/teacher', teacherRoute)
 // subject 
-app.use('/subject', subjectRoute);
+app.use('/api/subject', subjectRoute);
 // plan 
-app.use('/plan', planRoute)
+app.use('/api/plan', planRoute)
 // student enrollment 
-app.use('/studentenrollment', stdenrollRoute);
+app.use('/api/studentenrollment', stdenrollRoute);
 // teacher enrollment 
-app.use('/teacherenrollment', tchenrollRoute)
+app.use('/api/teacherenrollment', tchenrollRoute)
 
 // result 
-app.use('/result', resultRoute);
+app.use('/api/result', resultRoute);
 
 // student attendance 
-app.use('/attendance', AttendanceRoute);
+app.use('/api/attendance', AttendanceRoute);
 
 
 app.use(notFound);

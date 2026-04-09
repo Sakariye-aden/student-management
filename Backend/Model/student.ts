@@ -2,10 +2,10 @@ import mongoose, { Document, Schema } from "mongoose";
 
 export interface Istudent extends Document{
     userId : typeof Schema.Types.ObjectId,
-    fristname : string,
+    firstname : string,
     lastname  : string ,
     gender : string ,
-    dateofbirth : Date ,
+    age : number ,
     grade : number,
     section : string 
     parentname :string,
@@ -18,10 +18,10 @@ const studentSchema = new Schema<Istudent>({
             type: mongoose.Schema.Types.ObjectId,
             ref:'User'
     }, 
-    fristname : {type:String, required: true},
+    firstname : {type:String, required: true},
     lastname : {type:String, required: true},
     gender : {type:String, required: true},
-    dateofbirth : {type:Date },
+    age: {type:Number, required:true },
     grade : {type:Number, required: true},
     section : {
         type: String,

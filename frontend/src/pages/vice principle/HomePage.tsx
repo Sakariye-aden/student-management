@@ -59,7 +59,7 @@ const HomePage = () => {
             <CardContent className="flex flex-col text-white">  
               <span className="text-xl font-medium">Total students</span>
               <div className='flex justify-between'>
-                 <span className='text-xl font-bold'>{data.students}</span>
+                 <span className='text-xl font-bold'>{data?.students}</span>
                  <Users className='size-10'/>
               </div>
             </CardContent>
@@ -69,7 +69,7 @@ const HomePage = () => {
             <CardContent className="flex flex-col text-white">  
               <span className="text-xl font-medium">Total teachers</span>
               <div className='flex justify-between'>
-                 <span className='text-xl font-bold'>{data.teachers}</span>
+                 <span className='text-xl font-bold'>{data?.teachers}</span>
                  <UserCheck className='size-10'/>
               </div>
             </CardContent>
@@ -78,7 +78,7 @@ const HomePage = () => {
             <CardContent className="flex flex-col text-white">  
               <span className="text-xl font-medium">Total subjects</span>
               <div className='flex justify-between'>
-                 <span className='text-xl font-bold'>{data.subjects}</span>
+                 <span className='text-xl font-bold'>{data?.subjects}</span>
                  <BookOpen className='size-10'/>
               </div>
             </CardContent>

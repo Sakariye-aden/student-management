@@ -58,7 +58,7 @@ export const loginUser = async (req:Request, res:Response , next : NextFunction)
       httpOnly: false,
       secure: true,
       sameSite: "strict",
-      maxAge: 60 * 60 * 1000, // 1 hour
+      maxAge: 4 * 24 * 60 * 60 * 1000, // 4 days 
      });
    
      res.json(user);
@@ -91,3 +91,16 @@ export const getMe = async (req: Request, res: Response) => {
 
   res.json(user);
 };
+
+
+// all users 
+export const AllUsers = async (_req:Request, res:Response, next:NextFunction)=>{
+  try {
+    const all = await User.find({});
+
+    res.json(all)
+     
+  } catch (error) {
+    next(error)
+  }
+}

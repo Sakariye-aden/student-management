@@ -6,9 +6,9 @@ export const registerStudent = async (req:Request<{},{},Istudent>, res:Response 
 
      try {
         
-        const { userId, fristname,lastname,gender,dateofbirth,grade,section,parentname,phone,relationship } = req.body
+        const { userId, firstname,lastname,gender,age,grade,section,parentname,phone,relationship } = req.body
 
-        const newStudent = await Student.create({ userId, fristname,lastname,gender,dateofbirth,grade,section,parentname,phone,relationship });
+        const newStudent = await Student.create({ userId, firstname,lastname,gender,age ,grade,section,parentname,phone,relationship });
 
         return res.status(201).json({
             newStudent,
