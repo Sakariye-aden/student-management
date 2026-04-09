@@ -15,6 +15,7 @@ import stdenrollRoute from './Routes/studentenroll';
 import tchenrollRoute from './Routes/teacherenrollment';
 import resultRoute from './Routes/result';
 import AttendanceRoute from './Routes/Attendance';
+import DashboardRoute from './Routes/dashboard';
 
 dotenv.config()
 
@@ -36,7 +37,7 @@ app.use(cors(
 app.use('/api/Auth',userRoute)
 app.use('/api/Auth',userRoute)
 app.use('/admin', AdminRoute)
-
+app.use('/api/dashboard', DashboardRoute)
 // student 
 app.use('/student', studentRoute)
 // teacher 
