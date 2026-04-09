@@ -51,6 +51,7 @@ export const loginUser = async (req:Request, res:Response , next : NextFunction)
          const id = user._id.toString() ;
         //  const userid = id.toString();
 
+
           const token = generateToken(id)
      // ✅ set HttpOnly cookie
      res.cookie("authToken", token, {
@@ -60,7 +61,7 @@ export const loginUser = async (req:Request, res:Response , next : NextFunction)
       maxAge: 60 * 60 * 1000, // 1 hour
      });
    
-     res.json({ message: "Login successful" });
+     res.json(user);
 
      } catch (error) {
         next(error)
