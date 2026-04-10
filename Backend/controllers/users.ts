@@ -104,3 +104,21 @@ export const AllUsers = async (_req:Request, res:Response, next:NextFunction)=>{
     next(error)
   }
 }
+
+// delete user 
+
+export const deleteUser = async (req:Request, res:Response, next:NextFunction)=>{
+  
+   try {
+       const { id } = req.params;
+   
+      const deleteOne= await User.findByIdAndDelete({_id:id})
+      
+      return res.json({
+         message : "user deleted succesfully",
+         id :deleteOne?._id
+      })
+   } catch (error) {
+      next(error)
+   }
+  }

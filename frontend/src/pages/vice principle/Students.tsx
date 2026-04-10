@@ -29,11 +29,11 @@ import {
 } from "../../components/ui/dialog";
 import {
   AlertDialog,
-  AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
+  AlertDialogCancel,
   AlertDialogTitle,
 } from "../../components/ui/alert-dialog";
 import { FolderArchive, Loader, Pencil, SquarePen, Trash } from "lucide-react";
@@ -58,7 +58,7 @@ export interface Usr {
 }
 
 interface formInfo {
-  userId? : string
+  userId?: string;
   firstname: string;
   lastname: string;
   gender: string;
@@ -70,23 +70,19 @@ interface formInfo {
   relationship: string;
 }
 
-
-
-
-
-
-
-
+interface StdItem extends formInfo {
+  _id: string;
+}
 
 const VpStudents = () => {
+  const queryClient = useQueryClient();
 
-
-
-    const queryClient = useQueryClient();
-
-  
   const [isEdit, setisEdit] = useState<Usr | null>(null);
   const [isDelete, setIsDelete] = useState<Usr | null>(null);
+  // student information states
+  const [editStudent, setEditStudent] = useState<StdItem | null>(null);
+  const [deleteStudent, setdeleteStudent] = useState<StdItem | null>(null);
+
   const [isOpen, setIsOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
 
@@ -108,72 +104,143 @@ const VpStudents = () => {
     setIsOpen(false);
     setisEdit(null);
     setIsDelete(null);
+    setEditStudent(null);
+    setdeleteStudent(null);
     setIsDeleteOpen(false);
   };
 
   // handle Edit
   const handleEdit = (item: Usr) => {
     setisEdit(item);
-  
-
-    // //  update form
-    //   setFormData({
-    //     firstname: formData.firstname ,
-    //     lastname: formData.lastname,
-    //     gender: formData.gender,
-    //     age: formData.age,
-    //     grade: 1,
-    //     section: "",
-    //     parentName: "",
-    //     phone: 1,
-    //     relationship: "",
-    //  })
   };
- 
+
   // handle Delete
   const handleDelete = (item: Usr) => {
     setIsDelete(item);
-
-    console.log("user item delete", item);
   };
 
- // handle change 
-     const handleChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
-         const {name , value }= e.target;
-          setFormData({...formData , [name]: value })
-      }
-   // handle select 
-  const handleSelect = (field: keyof formInfo) =>(value: string) => {
+  //  edit student Informatio
+  const EditStudent = (item: StdItem) => {
+    setEditStudent(item);
+    setFormData({
+      firstname: item.firstname,
+      lastname: item.lastname,
+      gender: item.gender,
+      age: item.age,
+      grade: item.grade,
+      section: item.section,
+      parentname: item.parentname,
+      phone: item.phone,
+      relationship: item.relationship,
+    });
+  };
+
+  //  delete student information
+  const DeleteStudent = (item: StdItem) => {
+    setdeleteStudent(item);
+  };
+
+  // handle change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+  // handle select
+  const handleSelect = (field: keyof formInfo) => (value: string) => {
     setFormData({ ...formData, [field]: value });
   };
 
-  // register student 
-   const createMutation = useMutation({
-          mutationFn : async (userData:formInfo) => {
-             const response = await api.post('/student', userData);
-              return response.data
-           },
-           onSuccess : ()=>{
-              //  queryClient.invalidateQueries(['trans'])
-               toast.success('student registered successfully.')
-               setIsOpen(false)
-           },
-           onError: (error)=>{
-             console.log("create user error", error);
-              toast.error(extractErrorMessages(error))
-           }
-       })
-  
+  const DeleteConfirmation = async () => {
+    try {
+      if (isDelete) {
+        await DeleteUserMutation.mutateAsync(isDelete?._id);
+        setIsOpen(false);
+        setIsDelete(null);
+      } else {
+        await DeleteStudentMutation.mutateAsync(deleteStudent?._id!);
+        setIsOpen(false);
+        setdeleteStudent(null);
+      }
+    } catch (error) {
+      toast.error("error happened during Deletion");
+      setIsOpen(false);
+    }
+  };
 
-//  edit Students info 
+  // register student
+  const createMutation = useMutation({
+    mutationFn: async (userData: formInfo) => {
+      const response = await api.post("/student", userData);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      toast.success("student registered successfully.");
+      setIsOpen(false);
+      setisEdit(null)
+    },
+    onError: (error) => {
+      console.log("create user error", error);
+      toast.error(extractErrorMessages(error));
+    },
+  });
 
+  // delete User whose role is Student
+  const DeleteUserMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await api.delete(`/Auth/user/${id}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("student deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+      setIsDeleteOpen(false);
+      setIsDelete(null);
+    },
+    onError: (error) => {
+      toast.error(extractErrorMessages(error));
+    },
+  });
 
+  //  edit Students info
+  // put mutation students
+  const UpdateMutation = useMutation({
+    mutationFn: async (updateData: formInfo) => {
+      const response = await api.put(
+        `/student/${editStudent?._id}`,
+        updateData,
+      );
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("updated student information successfully");
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      setEditStudent(null);
+    },
+    onError: (error) => {
+      toast.error(extractErrorMessages(error));
+    },
+  });
 
-// delete student 
+  // delete mutation Student
 
+  const DeleteStudentMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const response = await api.delete(`/student/${id}`);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success("student deleted successfully");
+      queryClient.invalidateQueries({ queryKey: ["students"] });
+      setIsDeleteOpen(false);
+      setIsDelete(null);
+    },
+    onError: (error) => {
+      toast.error(extractErrorMessages(error));
+    },
+  });
 
-
-  // get user whose role is student  and then register 
+  // get user whose role is student  and then register
   const { data: StudentRole } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
@@ -182,88 +249,81 @@ const VpStudents = () => {
     },
   });
 
-  //  console.log("data Users ", data);
-  //  console.log("error users", error);
+  //  get students in the student collection
+  const { data: Students } = useQuery({
+    queryKey: ["students"],
+    queryFn: async () => {
+      const response = await api.get("/student");
+      return response.data;
+    },
+  });
 
   const filteredUser = StudentRole?.filter((u: Usr) => u.role == "student");
 
-   
   // handleSubmit
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  const handleSubmit = async (e:React.FormEvent<HTMLFormElement>)=>{
-      
-      e.preventDefault();
-    
-       if(!formData.firstname || !formData.lastname ||!formData.gender || !formData.age || !formData.gender || !formData.parentname || !formData.phone || !formData.relationship ){
-          console.log('errors happaned.');
-          toast.error('all fields are required * ')
-          return
-       }
+    if (
+      !formData.firstname ||
+      !formData.lastname ||
+      !formData.gender ||
+      !formData.age ||
+      !formData.gender ||
+      !formData.parentname ||
+      !formData.phone ||
+      !formData.relationship
+    ) {
+      console.log("errors happaned.");
+      toast.error("all fields are required * ");
+      return;
+    }
 
-      //  prepare your data 
-      // const userData = {
-      //       userId : isEdit?._id,
-      //       firstname: formData.firstname.trim(),
-      //       lastname: formData.lastname.trim(),
-      //       gender: formData.gender,
-      //       age: Number(formData.age),
-      //       grade: Number(formData.grade),
-      //       section: formData.section.trim(),
-      //       parentname: formData.parentname.trim(),
-      //       phone: Number(formData.phone),
-      //       relationship: formData.relationship.trim(),
-      //   }
+    if (editStudent) {
+      //  updated Students
+      UpdateMutation.mutate({
+        userId: editStudent?.userId,
+        firstname: formData.firstname.trim(),
+        lastname: formData.lastname.trim(),
+        gender: formData.gender,
+        age: Number(formData.age),
+        grade: Number(formData.grade),
+        section: formData.section.trim(),
+        parentname: formData.parentname.trim(),
+        phone: Number(formData.phone),
+        relationship: formData.relationship.trim(),
+      });
+    } else {
+      // register User
+      createMutation.mutate({
+        userId: isEdit?._id,
+        firstname: formData.firstname.trim(),
+        lastname: formData.lastname.trim(),
+        gender: formData.gender,
+        age: Number(formData.age),
+        grade: Number(formData.grade),
+        section: formData.section.trim(),
+        parentname: formData.parentname.trim(),
+        phone: Number(formData.phone),
+        relationship: formData.relationship.trim(),
+      });
+    }
 
-      // register User 
+    // clear form
+    setFormData({
+      firstname: "",
+      lastname: "",
+      gender: "",
+      age: 1,
+      grade: 1,
+      section: "",
+      parentname: "",
+      phone: 1,
+      relationship: "",
+    });
 
-        createMutation.mutate({
-            userId : isEdit?._id,
-            firstname: formData.firstname.trim(),
-            lastname: formData.lastname.trim(),
-            gender: formData.gender,
-            age: Number(formData.age),
-            grade: Number(formData.grade),
-            section: formData.section.trim(),
-            parentname: formData.parentname.trim(),
-            phone: Number(formData.phone),
-            relationship: formData.relationship.trim(),
-        })
-
-
-        // clear form 
-        setFormData({
-           firstname: "",
-            lastname: "",
-            gender: "",
-            age: 1,
-            grade: 1,
-            section: "",
-            parentname: "",
-            phone: 1,
-            relationship: "",
-       })
-
-
-  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    setIsOpen(false);
+  };
 
   return (
     <div className="bg-card h-screen p-6 ">
@@ -279,19 +339,19 @@ const VpStudents = () => {
           Register student
         </Button>
       </div>
-      <h1>when the student logged in and we don't register more details</h1>
+       <h1 className="text-lg text-blue-600 py-4">student Login confirmed — additional details required *</h1>
       {filteredUser?.length === 0 ? (
         <Empty className="flex justify-center items-center">
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <FolderArchive />
             </EmptyMedia>
-            <EmptyTitle> No transactions Found </EmptyTitle>
-            <EmptyDescription>Start tracking your money today</EmptyDescription>
+            <EmptyTitle> No student Found </EmptyTitle>
+            <EmptyDescription>there is no student here </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
             <div className="flex gap-2">
-              <Button onClick={() => setIsOpen(true)}>Add Transactions</Button>
+              <Button onClick={() => setIsOpen(true)}>Register student</Button>
             </div>
           </EmptyContent>
         </Empty>
@@ -344,14 +404,87 @@ const VpStudents = () => {
           </table>
         </div>
       )}
-      {/* className="sm:max-w-106.25" */}
-      <div >
+      {/* students  */}
+      <div className="my-3">
+        <h2 className="text-blue-600 text-lg py-3">Students who finish registration will appear in this list.</h2>
+        {Students?.length == 0 ? (
+          <Empty className="flex justify-center items-center">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <FolderArchive />
+              </EmptyMedia>
+              <EmptyTitle> No user Found that whose role is student </EmptyTitle>
+              <EmptyDescription>there is no student here </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <div className="flex gap-2">
+                <Button className="rounded-md">
+                  Register student
+                </Button>
+              </div>
+            </EmptyContent>
+          </Empty>
+        ) : (
+          <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
+            <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
+              <thead className="bg-gray-100 text-gray-700 sticky top-0">
+                <tr>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Name
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Grade
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Age
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200">
+                {Students?.map((item: StdItem) => (
+                  <tr
+                    key={item._id}
+                    className="hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <td className="px-4 py-2 ">{item.firstname}</td>
+                    <td className="px-4 py-2 ">{item.grade}</td>
+                    <td className="py-2 ">{item.age}</td>
+
+                    <td className="px-4 py-2 flex ">
+                      <button
+                        className="p-1  text-sm  rounded cursor-pointer "
+                        onClick={() => EditStudent(item)}
+                      >
+                        <Pencil className="w-4 h-4 text-blue-500" />
+                      </button>
+                      <button
+                        className="p-1 text-sm rounded cursor-pointer"
+                        onClick={() => DeleteStudent(item)}
+                      >
+                        <Trash className="w-4 h-4 text-red-500" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+
+      <div>
         {/* Dialog */}
-        <Dialog open={isOpen || !!isEdit} onOpenChange={HandleOpen}>
-          <DialogContent className=" sm:max-w-md  md:max-w-lg lg:max-w-xl  max-h-[90vh]  overflow-y-auto rounded-xl" >
+        <Dialog
+          open={isOpen || !!isEdit || !!editStudent}
+          onOpenChange={HandleOpen}
+        >
+          <DialogContent className=" sm:max-w-md  md:max-w-lg lg:max-w-xl  max-h-[90vh]  overflow-y-auto rounded-xl">
             <DialogHeader>
               <DialogTitle>
-                {isEdit ? "Editing Student " : "Adding New Student"}
+                {editStudent ? "Editing Student " : "Adding New Student"}
               </DialogTitle>
               <DialogDescription>
                 {isEdit ? "Make changes to your " : "Adding "}
@@ -384,14 +517,14 @@ const VpStudents = () => {
                     placeholder="@peduarte"
                   />
                 </div>
-               {/* gender */}
+                {/* gender */}
                 <div className="grid gap-3">
                   <Label htmlFor="gender">Gender *</Label>
                   <Select
                     onValueChange={handleSelect("gender")}
                     value={formData.gender}
                   >
-                    <SelectTrigger  className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground">
+                    <SelectTrigger className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground">
                       <SelectValue placeholder="Select gender" />
                     </SelectTrigger>
                     <SelectContent>
@@ -404,7 +537,7 @@ const VpStudents = () => {
                 <div className="grid gap-3">
                   <Label htmlFor="amount">Age *</Label>
                   <Input
-                   className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
+                    className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                     type="number"
                     id="amount"
                     name="age"
@@ -413,11 +546,11 @@ const VpStudents = () => {
                     min={1}
                   />
                 </div>
-                
+
                 <div className="grid gap-3">
                   <Label htmlFor="grade">Grade</Label>
                   <Input
-                   className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
+                    className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                     type="number"
                     id="grade"
                     name="grade"
@@ -451,7 +584,7 @@ const VpStudents = () => {
                 <div className="grid gap-3">
                   <Label htmlFor="phone">Phone</Label>
                   <Input
-                   className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
+                    className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                     type="number"
                     id="phone"
                     name="phone"
@@ -462,7 +595,7 @@ const VpStudents = () => {
                 <div className="grid gap-3">
                   <Label htmlFor="relation">relationship</Label>
                   <Input
-                   className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
+                    className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground"
                     type="text"
                     id="relation"
                     name="relationship"
@@ -471,9 +604,11 @@ const VpStudents = () => {
                   />
                 </div>
               </div>
-              <DialogFooter >
+              <DialogFooter>
                 <DialogClose asChild>
-                  <Button variant="outline" className=" p-3 rounded-md">Cancel</Button>
+                  <Button variant="outline" className=" p-3 rounded-md">
+                    Cancel
+                  </Button>
                 </DialogClose>
                 <Button type="submit" className="p-3 rounded-md">
                   {createMutation.isPending ? (
@@ -490,6 +625,39 @@ const VpStudents = () => {
           </DialogContent>
         </Dialog>
       </div>
+      {/* alert Dialog  */}
+      <AlertDialog
+        open={isDeleteOpen || !!isDelete || !!deleteStudent}
+        onOpenChange={HandleOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you absolutely sure to delete ?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="text-lg font-medium pr-1">
+                {isDelete ? isDelete.name : deleteStudent?.firstname}
+              </span>
+              cannot be undone. This will permanently delete your account and
+              remove your data from our servers
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <Button onClick={DeleteConfirmation}>
+              {DeleteStudentMutation.isPending ? (
+                <span className="flex justify-center items-center gap-2">
+                  <Loader className="animate-spin" />
+                  Delete
+                </span>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
