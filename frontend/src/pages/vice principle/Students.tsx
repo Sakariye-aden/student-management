@@ -326,7 +326,7 @@ const VpStudents = () => {
   };
 
   return (
-    <div className="bg-card h-screen p-6 ">
+    <div className="bg-card min-h-screen p-6 ">
       <h1 className="text-2xl font-medium py-2">Student management system</h1>
       <div className="flex justify-between items-center my-2">
         <p className="font-medium">

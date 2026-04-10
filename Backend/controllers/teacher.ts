@@ -5,9 +5,9 @@ import Teacher, { Iteacher } from "../Model/teacher";
 export const registerTeacher = async (req:Request<{},{},Iteacher>, res:Response, next:NextFunction)=>{
   
     try {
-        const {userId, fristname, lastname, gender, phone,qualification }= req.body;
+        const { userId, firstname, lastname, gender, phone,qualification }= req.body;
 
-        const newTeacher = await Teacher.create({userId, fristname, lastname, gender, phone, qualification});
+        const newTeacher = await Teacher.create({userId, firstname, lastname, gender, phone, qualification});
 
 
 
