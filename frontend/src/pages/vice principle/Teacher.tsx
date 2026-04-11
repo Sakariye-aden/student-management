@@ -219,7 +219,7 @@ const VpTeacher = () => {
   });
 
   // get user whose role is student  and then register
-  const { data: teacherRole , isLoading:userLoading} = useQuery({
+  const { data: teacherRole } = useQuery({
     queryKey: ["users"],
     queryFn: async () => {
       const response = await api.get("/Auth/all");
@@ -237,7 +237,7 @@ const VpTeacher = () => {
   });
 
   const filteredUser = teacherRole?.filter((u: Usr) => u.role == "teacher");
-
+  
   // handleSubmit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -289,7 +289,7 @@ const VpTeacher = () => {
   };
 
 
-  if(LoadTeacher || userLoading){
+  if(LoadTeacher){
      return (
           <div className='h-screen flex justify-center items-center'>
              <Loader className='animate-spin text-3xl' />
@@ -303,10 +303,10 @@ const VpTeacher = () => {
 
   return (
     <div className="bg-card min-h-screen p-6 ">
-      <h1 className="text-2xl font-medium py-2">Student management system</h1>
+      <h1 className="text-2xl font-medium py-2 text-blue-600">Teacher management.</h1>
       <div className="flex justify-between items-center my-2">
-        <p className="font-medium">
-          View and Manage all your Teacher that you've added to your account
+        <p className="font-medium text-blue-600">
+          Teacher management is designed to handle all teacher-related information with in the institution  
         </p>
         <Button
           className="cursor-pointer p-2 rounded-md"
@@ -334,7 +334,7 @@ const VpTeacher = () => {
       ) : (
         <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
           <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
-            <thead className="bg-gray-100 text-gray-700 sticky top-0">
+            <thead className="bg-gray-100 text-blue-600 sticky top-0">
               <tr>
                 <th className="px-4 py-2 text-left text-sm font-semibold">
                   Name
@@ -354,7 +354,7 @@ const VpTeacher = () => {
               {filteredUser?.map((item: Usr) => (
                 <tr
                   key={item._id}
-                  className="hover:bg-gray-50 transition-colors duration-200"
+                  className="hover:bg-gray-50 transition-colors duration-200 text-blue-600"
                 >
                   <td className="px-4 py-2 ">{item.name}</td>
                   <td className="px-4 py-2 ">{item.email}</td>
@@ -389,7 +389,7 @@ const VpTeacher = () => {
               <EmptyMedia variant="icon">
                 <FolderArchive />
               </EmptyMedia>
-              <EmptyTitle> No user Found that whose role is Teacher </EmptyTitle>
+              <EmptyTitle> No Teacher yet  </EmptyTitle>
               <EmptyDescription>there is no Teacher here </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>

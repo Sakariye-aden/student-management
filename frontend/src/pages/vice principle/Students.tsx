@@ -327,10 +327,10 @@ const VpStudents = () => {
 
   return (
     <div className="bg-card min-h-screen p-6 ">
-      <h1 className="text-2xl font-medium py-2">Student management system</h1>
+      <h1 className="text-2xl font-medium py-2 text-blue-600">Student management.</h1>
       <div className="flex justify-between items-center my-2">
-        <p className="font-medium">
-          View and Manage all your students that you've added to your account
+        <p className=" text-blue-600">
+          The Student management allows the vice principle to efficiently register ,update,and manage student records withh in the school
         </p>
         <Button
           className="cursor-pointer p-2 rounded-md"
@@ -358,7 +358,7 @@ const VpStudents = () => {
       ) : (
         <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
           <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
-            <thead className="bg-gray-100 text-gray-700 sticky top-0">
+            <thead className="bg-gray-100 text-blue-600 sticky top-0">
               <tr>
                 <th className="px-4 py-2 text-left text-sm font-semibold">
                   Name
@@ -378,7 +378,7 @@ const VpStudents = () => {
               {filteredUser?.map((item: Usr) => (
                 <tr
                   key={item._id}
-                  className="hover:bg-gray-50 transition-colors duration-200"
+                  className="hover:bg-gray-50 transition-colors duration-200 text-blue-500"
                 >
                   <td className="px-4 py-2 ">{item.name}</td>
                   <td className="px-4 py-2 ">{item.email}</td>
@@ -427,7 +427,7 @@ const VpStudents = () => {
         ) : (
           <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
-              <thead className="bg-gray-100 text-gray-700 sticky top-0">
+              <thead className="bg-gray-100 text-blue-600 sticky top-0">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold">
                     Name
@@ -447,7 +447,7 @@ const VpStudents = () => {
                 {Students?.map((item: StdItem) => (
                   <tr
                     key={item._id}
-                    className="hover:bg-gray-50 transition-colors duration-200"
+                    className="hover:bg-gray-50 transition-colors duration-200 text-blue-600"
                   >
                     <td className="px-4 py-2 ">{item.firstname}</td>
                     <td className="px-4 py-2 ">{item.grade}</td>

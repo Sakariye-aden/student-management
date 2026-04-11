@@ -36,8 +36,7 @@ const HomePage = () => {
        )
     }
 
-    console.log('data', data);
-
+  
 
 
   return (
@@ -46,14 +45,6 @@ const HomePage = () => {
       <h1 className="text-2xl font-medium text-blue-600">Hello, {user?.name} 👏</h1>
       {/* cards */}
       <div>
-        {/* <div className="my-4">
-          <Card className="bg-linear-to-r from-green-500 to-green-600">
-            <CardContent className="h-12 flex flex-col text-primary-foreground">
-              <span>Total Balance</span>
-              <span className="text-2xl font-medium">TotalBalance</span>
-            </CardContent>
-          </Card>
-        </div> */}
         <div className="flex space-x-4 my-3">
           <Card className="w-full flex bg-linear-to-r from-rose-500 to-orange-400 rounded-lg">
             <CardContent className="flex flex-col text-white">  
