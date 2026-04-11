@@ -11,11 +11,11 @@ export interface Istdenrolment extends Document{
 const studentEnrollmentSchema = new Schema<Istdenrolment>({
    subjectId:{
                    type: mongoose.Schema.Types.ObjectId,
-                   ref:'Subject'
+                   ref:'subject'
            },
    studentId:{
                    type: mongoose.Schema.Types.ObjectId,
-                   ref:'Student'
+                   ref:'student'
            },
     grade:{type:String},     
     section:{type:String},

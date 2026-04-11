@@ -20,7 +20,7 @@ const HomePage = () => {
      
     //  transactionQuery
       const {data , isLoading } = useQuery({
-        queryKey: ['trans'],
+        queryKey: ['dashboard'],
         queryFn : async () => {
            const response = await api.get('/dashboard');
             return response.data

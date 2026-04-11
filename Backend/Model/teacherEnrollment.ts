@@ -11,11 +11,11 @@ export interface Iteachenrolment extends Document{
 const teacherenrollmentSchema = new Schema<Iteachenrolment>({
    subjectId:{
                    type: mongoose.Schema.Types.ObjectId,
-                   ref:'Subject'
+                   ref:'subject'
            },
    teacherId:{
                    type: mongoose.Schema.Types.ObjectId,
-                   ref:'Teacher'
+                   ref:'teacher'
            },
     grade:{type:String},     
     section:{type:String},

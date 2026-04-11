@@ -1,8 +1,12 @@
 import { Router } from "express";
-import { teacherEnrolled } from "../controllers/teacherEnrollment";
+import { deleteTeacherEnroll, readTeachersubject, teacherEnrolled, updateTeacherEnroll } from "../controllers/teacherEnrollment";
+import { Protect } from "../middleware/protect";
 
 const Route = Router();
 
-Route.post('/', teacherEnrolled)
+Route.get('/', Protect , readTeachersubject)
+Route.post('/',Protect, teacherEnrolled);
+Route.put('/:id', Protect, updateTeacherEnroll);
+Route.delete('/:id', Protect, deleteTeacherEnroll)
 
 export default Route;
