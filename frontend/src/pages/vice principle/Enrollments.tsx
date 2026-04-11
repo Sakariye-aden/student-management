@@ -36,7 +36,7 @@ import {
   AlertDialogCancel,
   AlertDialogTitle,
 } from "../../components/ui/alert-dialog";
-import { FolderArchive, Loader, Pencil, SquarePen, Trash } from "lucide-react";
+import { FolderArchive, Loader, Pencil , Trash } from "lucide-react";
 
 import api from "../../lib/api/apiStore";
 import toast from "react-hot-toast";
@@ -54,9 +54,7 @@ interface formInfo {
   year: number;
 }
 
-interface StdItem extends formInfo {
-  _id: string;
-}
+
 
 type sbj = {
   _id: string;
@@ -262,6 +260,25 @@ const Enrollments = () => {
 
   // Delete Mutation for teacher enrollment
 
+   const deleteTeacherMutation = useMutation({
+       mutationFn: async (id: string) => {
+         const response = await api.delete(`/teacherenrollment/${id}`);
+         return response.data;
+       },
+       onSuccess: () => {
+         toast.success("teacher enrollment deleted successfully");
+         queryClient.invalidateQueries({ queryKey: ["teacherenrollments"] });
+         setIsDeleteOpen(false);
+         setIsDelete(null);
+       },
+       onError: (error) => {
+         toast.error(extractErrorMessages(error));
+       },
+     });
+
+
+
+
   // create Mutation for student  enrollment
    const createStudentMutation = useMutation({
     mutationFn: async (userData: formInfo) => {
@@ -302,9 +319,43 @@ const Enrollments = () => {
     },
   });
 
+  // Delete mutatation for student enrollment 
+  const deleteStudentMutation = useMutation({
+       mutationFn: async (id: string) => {
+         const response = await api.delete(`/studentenrollment/${id}`);
+         return response.data;
+       },
+       onSuccess: () => {
+         toast.success("student enrollment deleted successfully");
+         queryClient.invalidateQueries({ queryKey: ["studentenrollments"] });
+         setIsDeleteOpen(false);
+         setIsDelete(null);
+       },
+       onError: (error) => {
+         toast.error(extractErrorMessages(error));
+       },
+     });
 
-  // delete Mutation for student  enrollment
 
+
+
+  // delete Mutation All enrollments for both teacher and students 
+ const DeleteConfirmation = async ()=>{
+      
+     try {
+       
+        if(deleteTeacher){
+          await deleteTeacherMutation.mutateAsync(deleteTeacher?._id) 
+         
+        }else{
+          await deleteStudentMutation.mutateAsync(deleteStudent?._id!)
+       }
+          setdeleteTeacher(null)
+          setdeleteStudent(null)
+     } catch (error) {
+       console.log(error);
+     }
+ }
 
 
 
@@ -712,6 +763,40 @@ const Enrollments = () => {
           </DialogContent>
         </Dialog>
       </div>
+
+      {/* alert Dialog */}
+       <AlertDialog
+        open={isDeleteOpen || !!isDelete || !!deleteStudent || !!deleteTeacher}
+        onOpenChange={HandleOpen}
+      >
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              Are you absolutely sure to delete ?
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              <span className="text-lg font-medium pr-1">
+                {deleteTeacher ? deleteTeacher.teacherId?.firstname : deleteStudent?.studentId?.firstname} 
+              </span>
+              cannot be undone. This will permanently delete your account and
+              remove your data from our servers
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Cancel</AlertDialogCancel>
+            <Button onClick={DeleteConfirmation}>
+              {deleteTeacherMutation.isPending || deleteStudentMutation.isPending ? (
+                <span className="flex justify-center items-center gap-2">
+                  <Loader className="animate-spin" />
+                  Delete
+                </span>
+              ) : (
+                "Delete"
+              )}
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   );
 };
