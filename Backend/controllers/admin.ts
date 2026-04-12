@@ -7,11 +7,12 @@ export const updateUserRole = async (req:Request, res:Response , next:NextFuncti
      try { 
         
         const { id } = req.params
-          console.log('user id', id);
+        const { role } = req.body;
+
 
          const user = await User.findByIdAndUpdate(
             {_id:id},
-            {$set: {role: req.body.role}}
+             { role }
          )
     
       if(!user){

@@ -501,7 +501,7 @@ const Enrollments = () => {
                 {teacherEnroll?.map((item: tchEnr) => (
                   <tr
                     key={item._id}
-                    className="hover:bg-gray-50 transition-colors duration-200 text-blue-600"
+                    className="hover:bg-blue-100 transition-colors duration-200 text-blue-600"
                   >
                     <td className="px-4 py-2 ">{item.teacherId?.firstname}</td>
                     <td className="px-4 py-2 ">{item.subjectId?.name}</td>
@@ -583,7 +583,7 @@ const Enrollments = () => {
                   {studentEnroll?.map((item: tchEnr) => (
                     <tr
                       key={item._id}
-                      className="hover:bg-gray-50 transition-colors duration-200 text-blue-600"
+                      className="hover:bg-blue-100 transition-colors duration-200 text-blue-600"
                     >
                       <td className="px-4 py-2 ">
                         {item.studentId?.firstname}

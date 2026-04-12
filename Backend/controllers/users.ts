@@ -105,6 +105,31 @@ export const AllUsers = async (_req:Request, res:Response, next:NextFunction)=>{
   }
 }
 
+// get users for limit 
+export const getLimitUser =  async (req:Request, res:Response) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const skip = (page - 1) * limit;
+
+    const [users, total] = await Promise.all([
+      User.find().skip(skip).limit(limit),
+      User.countDocuments(),
+    ]);
+
+    res.json({
+      users,
+      total,
+      page,
+      totalPages: Math.ceil(total / limit),
+    });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+
 // delete user 
 
 export const deleteUser = async (req:Request, res:Response, next:NextFunction)=>{

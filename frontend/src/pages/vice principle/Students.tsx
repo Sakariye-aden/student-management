@@ -325,6 +325,9 @@ const VpStudents = () => {
     setIsOpen(false);
   };
 
+
+
+  
   return (
     <div className="bg-card min-h-screen p-6 ">
       <h1 className="text-2xl font-medium py-2 text-blue-600">Student management.</h1>
@@ -378,7 +381,7 @@ const VpStudents = () => {
               {filteredUser?.map((item: Usr) => (
                 <tr
                   key={item._id}
-                  className="hover:bg-gray-50 transition-colors duration-200 text-blue-500"
+                  className="hover:bg-blue-100 transition-colors duration-200 text-blue-500"
                 >
                   <td className="px-4 py-2 ">{item.name}</td>
                   <td className="px-4 py-2 ">{item.email}</td>
@@ -447,7 +450,7 @@ const VpStudents = () => {
                 {Students?.map((item: StdItem) => (
                   <tr
                     key={item._id}
-                    className="hover:bg-gray-50 transition-colors duration-200 text-blue-600"
+                    className="hover:bg-blue-100 transition-colors duration-200 text-blue-600"
                   >
                     <td className="px-4 py-2 ">{item.firstname}</td>
                     <td className="px-4 py-2 ">{item.grade}</td>

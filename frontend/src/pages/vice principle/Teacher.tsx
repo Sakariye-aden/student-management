@@ -354,7 +354,7 @@ const VpTeacher = () => {
               {filteredUser?.map((item: Usr) => (
                 <tr
                   key={item._id}
-                  className="hover:bg-gray-50 transition-colors duration-200 text-blue-600"
+                  className="hover:bg-blue-100 transition-colors duration-200 text-blue-600"
                 >
                   <td className="px-4 py-2 ">{item.name}</td>
                   <td className="px-4 py-2 ">{item.email}</td>
@@ -423,7 +423,7 @@ const VpTeacher = () => {
                 {Teachers?.map((item: StdItem) => (
                   <tr
                     key={item._id}
-                    className="hover:bg-gray-50 transition-colors duration-200"
+                    className="hover:bg-blue-100 transition-colors duration-200"
                   >
                     <td className="px-4 py-2 ">{item.firstname}</td>
                     <td className="px-4 py-2 ">{item.lastname}</td>

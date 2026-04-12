@@ -34,9 +34,9 @@ app.use(cors(
        }
     ))
 
+
 app.use('/api/Auth',userRoute)
-app.use('/api/Auth',userRoute)
-app.use('/admin', AdminRoute)
+app.use('/api/admin', AdminRoute)
 app.use('/api/dashboard', DashboardRoute)
 // student 
 app.use('/api/student', studentRoute)
