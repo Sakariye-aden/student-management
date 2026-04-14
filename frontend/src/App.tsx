@@ -72,7 +72,7 @@ function App() {
      {/* Dean of Student  */}
      <Route
         path="/dean"
-        element={<RoleProtectedRoute allowedRoles={["dean of student"]} />}
+        element={<RoleProtectedRoute allowedRoles={["dean of students"]} />}
       >
         <Route  element={<DeanDashboard />}>
           <Route index element={<DeanHomePage />} />

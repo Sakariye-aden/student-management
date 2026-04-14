@@ -72,7 +72,7 @@ const Roles = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {data?.users.map((user: User) => (
+            {data?.users?.map((user: User) => (
               <tr key={user._id}
                 className="hover:bg-blue-100 transition-colors duration-200 text-blue-600"
                >

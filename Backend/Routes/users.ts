@@ -4,8 +4,10 @@ import { Protect } from '../middleware/protect';
 
 const Route = Router();
 
+
 // get users for limit 
 Route.get('/users',Protect , getLimitUser )
+
 // get user info 
 Route.get('/me', Protect, getMe);
 // get all users 

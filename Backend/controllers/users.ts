@@ -105,6 +105,7 @@ export const AllUsers = async (_req:Request, res:Response, next:NextFunction)=>{
   }
 }
 
+
 // get users for limit 
 export const getLimitUser =  async (req:Request, res:Response) => {
   try {
@@ -128,6 +129,56 @@ export const getLimitUser =  async (req:Request, res:Response) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
+
+// get users whos role is student and paginate 
+export const getStudentRolebyLimit  = async (req:Request, res:Response) => {
+  const role = req.query.role || "student"; // default to student
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+
+  const skip = (page - 1) * limit;
+
+  const users = await User.find({ role }).select('-password') // filter by role
+    .skip(skip)
+    .limit(limit);
+
+  const total = await User.countDocuments({ role });
+ 
+
+  res.json({
+    page,
+    limit,
+    total,
+    totalPages: Math.ceil(total / limit),
+    data: users,
+  });
+}
+
+// get users role whos role is teacher 
+
+export const getTeacherRolebyLimit  = async (req:Request, res:Response) => {
+  const role = req.query.role || "teacher"; // default to student
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+
+  const skip = (page - 1) * limit;
+
+  const users = await User.find({ role }) // filter by role
+    .skip(skip)
+    .limit(limit);
+
+  const total = await User.countDocuments({ role });
+
+  res.json({
+    page,
+    limit,
+    total,
+    totalPages: Math.ceil(total / limit),
+    data: users,
+  });
+}
+
 
 
 // delete user 

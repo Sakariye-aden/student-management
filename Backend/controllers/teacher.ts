@@ -59,6 +59,27 @@ export const updateTeacher = async (req:Request, res:Response, next:NextFunction
       next(error)
    }
 }
+
+// get students using pagination 
+export const getTeacherPerLimit = async (req:Request, res:Response) => {
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+
+  const skip = (page - 1) * limit;
+
+  const students = await Teacher.find().skip(skip).limit(limit);
+  const total = await Teacher.countDocuments();
+
+  res.json({
+    page,
+    limit,
+    total,
+    totalPages: Math.ceil(total / limit),
+    data: students,
+  });
+}
+
+
 // delete student info 
 
 export const deleteTeacher = async (req:Request, res:Response, next:NextFunction)=>{
@@ -76,4 +97,6 @@ export const deleteTeacher = async (req:Request, res:Response, next:NextFunction
       next(error)
    }
 }
+
+
 

@@ -62,6 +62,13 @@ interface StdItem extends formInfo {
 const VpTeacher = () => {
   const queryClient = useQueryClient();
 
+  // pages 
+  const [page, setPage] = useState(1)
+
+  // setUser 
+  const [userpage, setUserPage]= useState(1);
+
+
   const [isEdit, setisEdit] = useState<Usr | null>(null);
   const [isDelete, setIsDelete] = useState<Usr | null>(null);
   // student information states
@@ -220,23 +227,27 @@ const VpTeacher = () => {
 
   // get user whose role is student  and then register
   const { data: teacherRole } = useQuery({
-    queryKey: ["users"],
-    queryFn: async () => {
-      const response = await api.get("/Auth/all");
-      return response.data;
+    queryKey: ["users",userpage],
+     queryFn: async () => {
+       const response = await api.get(`/teacher/Auth?role=teacher&page=${userpage}&limit=10`);
+        console.log('user pgt ', response.data);
+       return response.data ;
     },
+     placeholderData: (prev) => prev, // replaces keepPreviousData in v5
   });
 
-  //  get students in the student collection
+  //  get teacher in the teacher collection
   const { data: Teachers, isLoading:LoadTeacher } = useQuery({
-    queryKey: ["teachers"],
+    queryKey: ["teachers",page],
     queryFn: async () => {
-      const response = await api.get("/teacher");
-      return response.data;
-    },
+         const response = await api.get(`/teacher/All?page=${page}&limit=10`);
+         console.log("teacher pgn:",response.data);
+         return response.data;
+       },
+      placeholderData: (prev) => prev,   // keeps old data while fetching new
   });
 
-  const filteredUser = teacherRole?.filter((u: Usr) => u.role == "teacher");
+  // const filteredUser = teacherRole?.filter((u: Usr) => u.role == "teacher");
   
   // handleSubmit
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -303,10 +314,13 @@ const VpTeacher = () => {
 
   return (
     <div className="bg-card min-h-screen p-6 ">
-      <h1 className="text-2xl font-medium py-2 text-blue-600">Teacher management.</h1>
+      <h1 className="text-2xl font-medium py-2 text-blue-600">
+        Teacher management.
+      </h1>
       <div className="flex justify-between items-center my-2">
         <p className="font-medium text-blue-600">
-          Teacher management is designed to handle all teacher-related information with in the institution  
+          Teacher management is designed to handle all teacher-related
+          information with in the institution
         </p>
         <Button
           className="cursor-pointer p-2 rounded-md"
@@ -315,14 +329,16 @@ const VpTeacher = () => {
           Register Teacher
         </Button>
       </div>
-       <h1 className="text-lg text-blue-600 py-4">Teacher Login confirmed — additional details required *</h1>
-      {filteredUser?.length === 0 ? (
+      <h1 className="text-lg text-blue-600 py-4">
+        Teacher Login confirmed — additional details required *
+      </h1>
+      {teacherRole?.data?.length === 0 ? (
         <Empty className="flex justify-center items-center">
           <EmptyHeader>
             <EmptyMedia variant="icon">
               <FolderArchive />
             </EmptyMedia>
-            <EmptyTitle> No student Found </EmptyTitle>
+            <EmptyTitle> No Teacher Found </EmptyTitle>
             <EmptyDescription>there is no student here </EmptyDescription>
           </EmptyHeader>
           <EmptyContent>
@@ -332,6 +348,7 @@ const VpTeacher = () => {
           </EmptyContent>
         </Empty>
       ) : (
+        <div>
         <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
           <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
             <thead className="bg-gray-100 text-blue-600 sticky top-0">
@@ -351,7 +368,7 @@ const VpTeacher = () => {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
-              {filteredUser?.map((item: Usr) => (
+              {teacherRole?.data?.map((item: Usr) => (
                 <tr
                   key={item._id}
                   className="hover:bg-blue-100 transition-colors duration-200 text-blue-600"
@@ -379,74 +396,119 @@ const VpTeacher = () => {
             </tbody>
           </table>
         </div>
+         <div className="flex justify-between mt-4">
+              <button
+                disabled={userpage === 1}
+                onClick={() => setUserPage((prev) => prev - 1)}
+                className="px-4 py-2 bg-violet-600 text-white rounded-md disabled:opacity-50"
+              >
+                Prev
+              </button>
+
+              <span className="border text-center p-2 rounded-md">
+                Page {teacherRole?.page} of {teacherRole?.totalPages}
+              </span>
+
+              <button
+                disabled={userpage === teacherRole?.totalPages}
+                onClick={() => setUserPage((prev) => prev + 1)}
+                className="px-4 py-2 bg-gray-800 text-white rounded-md disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
+        </div>
       )}
       {/* students  */}
       <div className="my-3">
-        <h2 className="text-blue-600 text-lg py-3">Teachers who finish registration will appear in this list.</h2>
+        <h2 className="text-blue-600 text-lg py-3">
+          Teachers who finish registration will appear in this list.
+        </h2>
         {Teachers?.length == 0 ? (
           <Empty className="flex justify-center items-center">
             <EmptyHeader>
               <EmptyMedia variant="icon">
                 <FolderArchive />
               </EmptyMedia>
-              <EmptyTitle> No Teacher yet  </EmptyTitle>
+              <EmptyTitle> No Teacher yet </EmptyTitle>
               <EmptyDescription>there is no Teacher here </EmptyDescription>
             </EmptyHeader>
             <EmptyContent>
               <div className="flex gap-2">
-                <Button className="rounded-md">
-                  Register Teacher
-                </Button>
+                <Button className="rounded-md">Register Teacher</Button>
               </div>
             </EmptyContent>
           </Empty>
         ) : (
-          <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
-            <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
-              <thead className="bg-gray-100 text-gray-700 sticky top-0">
-                <tr>
-                  <th className="px-4 py-2 text-left text-sm font-semibold">
-                    F.Name
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold">
-                    L.Name
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold">
-                    Qualifaction
-                  </th>
-                  <th className="px-4 py-2 text-left text-sm font-semibold">
-                    Actions
-                  </th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-200">
-                {Teachers?.map((item: StdItem) => (
-                  <tr
-                    key={item._id}
-                    className="hover:bg-blue-100 transition-colors duration-200"
-                  >
-                    <td className="px-4 py-2 ">{item.firstname}</td>
-                    <td className="px-4 py-2 ">{item.lastname}</td>
-                    <td className="py-2 ">{item.qualification}</td>
-
-                    <td className="px-4 py-2 flex ">
-                      <button
-                        className="p-1  text-sm  rounded cursor-pointer "
-                        onClick={() => handleEditTeacher(item)}
-                      >
-                        <Pencil className="w-4 h-4 text-blue-500" />
-                      </button>
-                      <button
-                        className="p-1 text-sm rounded cursor-pointer"
-                        onClick={() => handleDeleteTeacher(item)}
-                      >
-                        <Trash className="w-4 h-4 text-red-500" />
-                      </button>
-                    </td>
+          <div>
+            <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
+              <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
+                <thead className="bg-gray-100 text-gray-700 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      F.Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      L.Name
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Qualifaction
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      Actions
+                    </th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {Teachers?.data?.map((item: StdItem) => (
+                    <tr
+                      key={item._id}
+                      className="hover:bg-blue-100 transition-colors duration-200"
+                    >
+                      <td className="px-4 py-2 ">{item.firstname}</td>
+                      <td className="px-4 py-2 ">{item.lastname}</td>
+                      <td className="py-2 ">{item.qualification}</td>
+
+                      <td className="px-4 py-2 flex ">
+                        <button
+                          className="p-1  text-sm  rounded cursor-pointer "
+                          onClick={() => handleEditTeacher(item)}
+                        >
+                          <Pencil className="w-4 h-4 text-blue-500" />
+                        </button>
+                        <button
+                          className="p-1 text-sm rounded cursor-pointer"
+                          onClick={() => handleDeleteTeacher(item)}
+                        >
+                          <Trash className="w-4 h-4 text-red-500" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="flex justify-between mt-4">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((prev) => prev - 1)}
+                className="px-4 py-2 bg-violet-600 text-white rounded-md disabled:opacity-50"
+              >
+                Prev
+              </button>
+
+              <span className="border text-center p-2 rounded-md">
+                Page {Teachers?.page} of {Teachers?.totalPages}
+              </span>
+
+              <button
+                disabled={page === Teachers?.totalPages}
+                onClick={() => setPage((prev) => prev + 1)}
+                className="px-4 py-2 bg-gray-800 text-white rounded-md disabled:opacity-50"
+              >
+                Next
+              </button>
+            </div>
           </div>
         )}
       </div>
@@ -508,7 +570,7 @@ const VpTeacher = () => {
                       <SelectItem value="female">female</SelectItem>
                     </SelectContent>
                   </Select>
-                </div> 
+                </div>
                 <div className="grid gap-3">
                   <Label htmlFor="phone">Phone *</Label>
                   <Input

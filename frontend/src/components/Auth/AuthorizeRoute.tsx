@@ -9,7 +9,7 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
       const roleRoutes: Record<string, string> = {
           principle: "/principal",
           "vice principle": "/vice-principal",
-          "dean of student": "/dean",
+          "dean of students": "/dean",
           teacher: "/teacher",
           student: "/student",
         };

@@ -12,7 +12,7 @@ export interface Istdattendance extends Document{
 
 const stdattendanceSchema = new Schema<Istdattendance>({
     grade:{type :Number , required : true},
-    section:{type :String },
+    section:{type :String, default : "A" },
     date :{type :Date , default : Date.now()},
    
     students :[
@@ -30,6 +30,7 @@ const stdattendanceSchema = new Schema<Istdattendance>({
       }
     ]
 })
+stdattendanceSchema.index({ grade: 1, section: 1, date: 1 }, { unique: true });
 
 const studentAttendance  = mongoose.model<Istdattendance>("studentattendance", stdattendanceSchema);
 
