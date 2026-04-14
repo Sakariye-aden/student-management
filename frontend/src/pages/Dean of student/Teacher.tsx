@@ -38,6 +38,7 @@ interface attdnc {
 
 
 
+
 function TeacherAttendance() {
  
    const [page , setPage]= useState(1);
@@ -45,25 +46,11 @@ function TeacherAttendance() {
   const [dataNow, setDataNow] = useState("");
   const [teachers, setTeachers] = useState<formInfo[]>([]);
 
-   const [ count, setCount]= useState({
-      presentNo : Number, 
-      absentNo: Number, 
-      excusedNo : Number
-   })
+  
   
    const queryClient = useQueryClient()
 
-  // load students 
-  //  get students in the student collection
-  // const {  refetch} = useQuery({
-  //   queryKey: ["student"],
-  //   queryFn: async () => {
-  //     const response = await api.get(`/student/user?grade=${grade}&section=${section}`);
-  //       // console.log('data Students Grade', response.data);
-  //     return response.data;
-  //   },
-   
-  // });
+  
 
 //  get teacher in the teacher collection with pagination
   const { data } = useQuery({
@@ -98,13 +85,15 @@ function TeacherAttendance() {
     
   };
 
+  //get how many teachers are present || absent || excuted
 const countPresent = teachers.filter((item)=> item.status == 'present').length;
 const countabsent = teachers.filter((item)=> item.status == 'absent').length;
 const countExcused = teachers.filter((item)=> item.status == 'excused').length;
 
-     console.log('cp',countPresent);
-     console.log('ca',countabsent);
-     console.log('ce',countExcused);
+  
+
+
+ 
 
   //  taking teacher attendance 
   const  teacherMutation = useMutation({
@@ -129,21 +118,14 @@ const countExcused = teachers.filter((item)=> item.status == 'excused').length;
       return;
     };
 
-    console.log({
-      date : dataNow,
+      // teacher mutation
+      teacherMutation.mutate({
+         date : dataNow,
          teachers: teachers.map((s) => ({
           teacherId: s._id!,
           status: s.status!,
         })),
-    });
-   
-      // teacherMutation.mutate({
-      //    date : dataNow,
-      //    teachers: teachers.map((s) => ({
-      //     studentId: s._id!,
-      //     status: s.status!,
-      //   })),
-      // })
+      })
      
   };
 
@@ -151,14 +133,14 @@ const countExcused = teachers.filter((item)=> item.status == 'excused').length;
 const Decrease = async ()=>{
     setPage((prev) => prev - 1);
     //  const { data } = await  refetch()
-    const initial = data?.map((s:formInfo) => ({ ...s, status: "present" }));
+    const initial = data?.data?.map((s:formInfo) => ({ ...s, status: "present" }));
     setTeachers(initial);
 }
 // Increase
 const Increase = async ()=>{
     setPage((prev) => prev + 1)
     //  const { data } = await  refetch()
-    const initial = data?.map((s:formInfo) => ({ ...s, status: "present" }));
+    const initial = data?.data?.map((s:formInfo) => ({ ...s, status: "present" }));
     setTeachers(initial);
 }
 
@@ -186,6 +168,11 @@ const Increase = async ()=>{
         <CardContent className="p-4">
           <div className="flex justify-between mb-4">
             <h2 className="text-lg font-semibold">Teacher Attendance</h2>
+            <div className="flex space-x-2">
+                <button className="bg-green-500 text-white p-2 rounded-md text-lg">present:<span className="font-bold">{countPresent}</span> </button>
+                <button className="bg-red-500 text-white p-2 rounded-md text-lg">absent:<span className="font-bold">{countabsent}</span> </button>
+                <button className="bg-yellow-500 text-white p-2 rounded-md text-lg">excused:<span className="font-bold">{countExcused}</span> </button>
+            </div>
           </div>
           <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
@@ -231,7 +218,7 @@ const Increase = async ()=>{
                       </Select>
                     </td>
                     <td>
-                       {teacher.status == "present" ? '✅' : '❌'}
+                       {teacher.status == "present" ? '✅' : teacher.status == "absent" ? '❌' : '‼️'}
                     </td>
                   </tr>
                 ))}

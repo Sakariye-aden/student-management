@@ -90,6 +90,13 @@ function StudentAttendance() {
       prev.map((s) => (s._id === id ? { ...s, status } : s)),
     );
   };
+ 
+  //get how many teachers are present || absent || excuted
+const countPresent = students.filter((item)=> item.status == 'present').length;
+const countabsent = students.filter((item)=> item.status == 'absent').length;
+const countExcused = students.filter((item)=> item.status == 'excused').length;
+
+
 
   //  taking student attendance 
   const studentMutation = useMutation({
@@ -182,6 +189,11 @@ function StudentAttendance() {
         <CardContent className="p-4">
           <div className="flex justify-between mb-4">
             <h2 className="text-lg font-semibold">Student Attendance</h2>
+             <div className="flex space-x-2">
+                <button className="bg-green-500 text-white p-2 rounded-md text-lg">present:<span className="font-bold">{countPresent}</span> </button>
+                <button className="bg-red-500 text-white p-2 rounded-md text-lg">absent:<span className="font-bold">{countabsent}</span> </button>
+                <button className="bg-yellow-500 text-white p-2 rounded-md text-lg">excuted:<span className="font-bold">{countExcused}</span> </button>
+             </div>
           </div>
           <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
             <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
@@ -195,6 +207,9 @@ function StudentAttendance() {
                   </th>
                   <th className="px-4 py-2 text-left text-sm font-semibold">
                     Status
+                  </th>
+                  <th className="px-4 py-2 text-left text-sm font-semibold">
+                    Mark
                   </th>
                 </tr>
               </thead>
@@ -223,6 +238,10 @@ function StudentAttendance() {
                         </SelectContent>
                       </Select>
                     </td>
+                     <td>
+                       {student.status == "present" ? '✅' : student.status == "absent" ? '❌' : '‼️'}
+                    </td>
+                    
                   </tr>
                 ))}
               </tbody>

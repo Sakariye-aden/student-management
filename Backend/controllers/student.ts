@@ -82,7 +82,6 @@ export const getStudentsGrade = async (req:Request, res:Response, next:NextFunct
   
       const grades = Number(grade);
       
-       console.log("data bck", grades, section);
       const Allstudents = await Student.find({ grade : grades , section : section as string})
 
       return res.json(Allstudents)
