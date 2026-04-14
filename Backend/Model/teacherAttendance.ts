@@ -25,6 +25,7 @@ const teacherattendanceSchema = new Schema<Itchrattendance>({
       }
     ]
 })
+teacherattendanceSchema.index({ date: 1 }, { unique: true });
 
 const teacherAttendance  = mongoose.model<Itchrattendance>("teacherattendance", teacherattendanceSchema);
 

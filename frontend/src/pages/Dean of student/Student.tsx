@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Button } from "../../components/ui/button";
 import { Card, CardContent } from "../../components/ui/card";
@@ -13,6 +13,7 @@ import {
 import api from "../../lib/api/apiStore";
 
 import toast from "react-hot-toast";
+import { extractErrorMessages } from "../../utility/errorUtility";
 
 interface formInfo {
   _id?:string;
@@ -30,6 +31,15 @@ interface formInfo {
 }
 
 
+interface attdnc {
+   grade : number;
+   section : string ;
+   date : string ;
+   students:{
+     studentId: string ;
+     status: string
+   }[]
+}
 
 
 
@@ -43,15 +53,15 @@ function StudentAttendance() {
 
 
   
-
+   const queryClient = useQueryClient()
 
   // load students 
   //  get students in the student collection
-  const { data , refetch} = useQuery({
+  const {  refetch} = useQuery({
     queryKey: ["student"],
     queryFn: async () => {
       const response = await api.get(`/student/user?grade=${grade}&section=${section}`);
-        console.log('data Students Grade', response.data);
+        // console.log('data Students Grade', response.data);
       return response.data;
     },
     enabled :false
@@ -81,27 +91,50 @@ function StudentAttendance() {
     );
   };
 
-  // const markAllPresent = () => {
-  //   setStudents((prev) => prev.map((s) => ({ ...s, status: "present" })));
-  //   console.log("student Update", students);
-  // };
+  //  taking student attendance 
+  const studentMutation = useMutation({
+     mutationFn: async (userData: attdnc) => {
+          const response = await api.post("/attendance/student", userData);
+          return response.data;
+        },
+        onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: ["studentsAttendance"] });
+          toast.success(`you did attendance for grade ${grade} section${section} successfully `);
+        },
+        onError: (error) => {
+          console.log("create user error", error);
+          toast.error(extractErrorMessages(error));
+        },
+  })
 
   const saveAttendance = () => {
-    const payload = {
-      grade : Number(grade),
-      section,
-      dataNow,
-      students: students.map((s) => ({
-        studentId: s._id,
-        status: s.status,
-      })),
-    };
-    console.log("Submitting:", payload);
+   
+    if (!grade || !section || !dataNow) {
+       toast.error('you have to select grade and section and date')
+      return;
+    }
+   
+      studentMutation.mutate({
+         grade : Number(grade),
+         section : section,
+         date : dataNow,
+         students: students.map((s) => ({
+          studentId: s._id!,
+          status: s.status!,
+        })),
+      })
+     
+     
   };
 
+
+
+
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6"> 
+      <h1 className="text-lg font-bold font-sans text-blue-600">Taking student attendances </h1>
       <Card className="bg-card rounded-md shadow-md">
+      
         <CardContent className="p-4 grid grid-cols-1 md:grid-cols-4 gap-4">
           <Select onValueChange={setGrade}>
             <SelectTrigger className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground">
