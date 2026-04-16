@@ -1,5 +1,14 @@
 import { NextFunction, Request, Response } from "express";
 import studentEnroll, { Istdenrolment } from "../Model/studentenrollment";
+import { Schema } from "mongoose";
+
+interface GetStudentsQuery {
+  subjectId: typeof Schema.Types.ObjectId ;
+  grade: string;
+  section: string;
+}
+
+
 
 export const studentEnrolled = async (req:Request<{},{},Istdenrolment>, res:Response, next:NextFunction)=>{
   try {
@@ -45,7 +54,24 @@ export const  readStudentsubject = async (_req:Request, res:Response, next:NextF
     }
 }
 
+export const getStudentsBySubject = async (req:Request, res:Response) => {
+  try {
+    const { subjectId, grade, section } = req.query as unknown as GetStudentsQuery ;
 
+
+    const enrollments = await studentEnroll.find({
+      subjectId,
+      grade :Number(grade),
+      section,
+    }as any).populate("studentId", "firstname"); // only get name
+
+    
+
+    res.json(enrollments);
+  } catch (error) {
+    res.status(500).json({ message: "no Student enrolled this subject" });
+  }
+};
 
 
 // update student enrolment 

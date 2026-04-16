@@ -44,11 +44,10 @@ const LoginForm = () => {
       return response.data;
     },
     onSuccess: (data) => {
+        
       if (data) {
         setAuth(data);
-        //  if(data.role == "vice principle"){
-        //    navigate("/vice-principal")
-        //  }
+  
         const roleRoutes: Record<string, string> = {
           principle: "/principal",
           "vice principle": "/vice-principal",
@@ -59,7 +58,7 @@ const LoginForm = () => {
 
         const route = roleRoutes[data.role.toLowerCase()];
         if (route) {
-           console.log('Route', route);
+          //  console.log('Route', route);
           navigate(route);
         } 
       }

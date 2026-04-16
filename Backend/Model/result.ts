@@ -27,6 +27,8 @@ const resultSchema = new Schema<Iresult>({
     year:{type:Number , required:true}     
 })
 
+resultSchema.index({ subjectId: 1, studentId: 1, type: 1 });
+
 const Result  = mongoose.model<Iresult>("result", resultSchema);
 
 export default Result;

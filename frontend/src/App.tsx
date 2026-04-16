@@ -3,22 +3,22 @@ import PublicRoute from "./components/Auth/AuthorizeRoute";
 import RoleProtectedRoute from "./components/Auth/RoleProtected";
 import LoginPage from "./pages/Auth/LoginPage";
 import RegisterPage from "./pages/Auth/RegisterPage";
-import Enrollments from "./pages/vice principle/Enrollments";
-import VpResults from "./pages/vice principle/Results";
-import VpStudents from "./pages/vice principle/Students";
-import VpSubjects from "./pages/vice principle/Subjects";
-import VpTeacher from "./pages/vice principle/Teacher";
-import ViceDashboard from "./pages/vice principle/Dashboard";
-import HomePage from "./pages/vice principle/HomePage";
-import TeacherDashboard from "./pages/teacher/Dashboard";
-import TeacherResult from "./pages/teacher/Result";
-import Teacherplan from "./pages/teacher/plan";
-import Mysubject from "./pages/teacher/Mysubject";
 import DeanDashboard from "./pages/Dean of student/Dashboard";
 import DeanHomePage from "./pages/Dean of student/HomePage";
 import StudentAttendance from "./pages/Dean of student/Student";
 import TeacherAttendance from "./pages/Dean of student/Teacher";
+import TeacherDashboard from "./pages/teacher/Dashboard";
+import TeacherHomePage from "./pages/teacher/HomePage";
+import TeacherResult from "./pages/teacher/Result";
+import Teacherplan from "./pages/teacher/plan";
+import ViceDashboard from "./pages/vice principle/Dashboard";
+import Enrollments from "./pages/vice principle/Enrollments";
+import HomePage from "./pages/vice principle/HomePage";
+import VpResults from "./pages/vice principle/Results";
 import Roles from "./pages/vice principle/Roles";
+import VpStudents from "./pages/vice principle/Students";
+import VpSubjects from "./pages/vice principle/Subjects";
+import VpTeacher from "./pages/vice principle/Teacher";
 
 function App() {
   return (
@@ -63,10 +63,9 @@ function App() {
         element={<RoleProtectedRoute allowedRoles={["teacher"]} />}
       >
         <Route  element={<TeacherDashboard />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<TeacherHomePage />} />
           <Route path="result" element={<TeacherResult />} />
           <Route path="plan" element={<Teacherplan />} />
-          <Route path="mysubjects" element={<Mysubject/>} />
         </Route>
       </Route>
      {/* Dean of Student  */}

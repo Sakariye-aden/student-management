@@ -149,6 +149,7 @@ const Increase = async ()=>{
 
   return (
     <div className="p-6 space-y-6">
+       <h1 className="text-lg font-bold font-sans text-blue-600">Taking teacher attendances </h1>
       <Card className="bg-card rounded-md shadow-md">
         <CardContent className="p-4 grid grid-cols-1 md:grid-cols-4 gap-4">
           <Input

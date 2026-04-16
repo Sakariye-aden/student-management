@@ -16,7 +16,7 @@ export const registerSubject = async (req:Request<{},{},Isubject>, res:Response,
 }
 
 
-// get all teachers 
+// get all subjects
 export const getSubjects = async (_req:Request, res:Response, next:NextFunction)=>{
 
     try {
@@ -29,7 +29,7 @@ export const getSubjects = async (_req:Request, res:Response, next:NextFunction)
     }
 }
 
-// update student info 
+// update subject info 
 
 export const updateSubject = async (req:Request, res:Response, next:NextFunction)=>{
   
@@ -43,7 +43,7 @@ export const updateSubject = async (req:Request, res:Response, next:NextFunction
       next(error)
    }
 }
-// delete student info 
+// delete delete info 
 
 export const deleteSubject = async (req:Request, res:Response, next:NextFunction)=>{
   

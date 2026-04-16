@@ -16,7 +16,7 @@ const RoleProtectedRoute = ({ allowedRoles }: { allowedRoles: string[] }) => {
       case "student":
         return <Navigate to="/student" replace />;
       case "dean of student":
-        return <Navigate to="/admin" replace />;
+        return <Navigate to="/dean" replace />;
       case "vice principle":
         return <Navigate to="/vice-principal" replace />;
       default:

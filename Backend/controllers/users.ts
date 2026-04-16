@@ -61,6 +61,7 @@ export const loginUser = async (req:Request, res:Response , next : NextFunction)
       maxAge: 4 * 24 * 60 * 60 * 1000, // 4 days 
      });
    
+      user.password = '';
      res.json(user);
 
      } catch (error) {
