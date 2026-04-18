@@ -1,11 +1,17 @@
 import { Router } from 'express';
-import { takingStudentattendance } from '../controllers/studentattendance';
+import { getStudentattendance, takingStudentattendance } from '../controllers/studentattendance';
 import { takingTeacherattendance } from '../controllers/teacherAttendance';
+import { Protect } from '../middleware/protect';
 
 
 const Route = Router();
 
-Route.post('/student', takingStudentattendance);
-Route.post('/teacher', takingTeacherattendance)
+// student attendance 
+Route.get('/student', Protect, getStudentattendance)
+Route.post('/student',Protect,   takingStudentattendance);
+
+
+// student attendance 
+Route.post('/teacher', Protect, takingTeacherattendance)
 
 export default Route

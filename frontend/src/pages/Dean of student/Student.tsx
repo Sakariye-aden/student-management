@@ -31,7 +31,8 @@ interface formInfo {
 }
 
 
-interface attdnc {
+export interface attdnc {
+  _id?:string
    grade : number;
    section : string ;
    date : string ;
