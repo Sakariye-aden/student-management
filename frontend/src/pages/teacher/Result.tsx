@@ -174,15 +174,6 @@ function TeacherResult() {
        year :  2026
     })
 
-    const payload = {
-      subjectId : formData.subjectId,
-      studentId : studentId,
-       teacherId : user?._id,
-       score :Number(Score),
-       type: term,
-       year :  2026
-    }
-     console.log('payload', payload);
     
 
     setTerm('');

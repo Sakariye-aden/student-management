@@ -228,7 +228,7 @@ const VpSubjects = () => {
           Add Subject
         </Button>
       </div>
-       <h1 className="text-lg text-blue-600 py-4">Teacher Login confirmed — additional details required *</h1>
+       <h1 className="text-lg text-blue-600 py-4">Subjects confirmed — update delete *</h1>
       {subject?.length === 0 ? (
         <Empty className="flex justify-center items-center">
           <EmptyHeader>
