@@ -13,7 +13,7 @@ import {
 import useAuthStore from "../../lib/store/useStore";
 
 import { useQueryClient } from "@tanstack/react-query";
-import { BookCheck, LayoutDashboard, LogOut, Menu, Trophy, UserCheck } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Trophy, UserCheck } from "lucide-react";
 import { Button } from "../../components/ui/button";
 
 

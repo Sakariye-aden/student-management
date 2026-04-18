@@ -14,3 +14,23 @@ export  const registerPlan = async (req:Request<{},{},Iplan>, res:Response, next
         next(error)
      }
 }
+
+
+export  const getPlanbyLimit  = async (req:Request, res:Response)=>{
+ 
+    try {
+       
+       const user = (req as any).user;
+      
+     
+       const plan = await Plan.find({ createdBy: user._id })
+  .sort({ createdAt: -1 }) // 🔥 correct
+  .limit(5);
+
+       res.json(plan)
+    } catch (error) {
+       res.status(400).json({
+         massege :error
+       })
+    }
+}

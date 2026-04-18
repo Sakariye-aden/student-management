@@ -1,13 +1,26 @@
 
+import { useMutation } from "@tanstack/react-query";
 import React, { useState } from "react";
+import api from "../../lib/api/apiStore";
+import toast from "react-hot-toast";
+import { extractErrorMessages } from "../../utility/errorUtility";
+import useAuthStore from "../../lib/store/useStore";
 
 
+export interface pln {
+  _id? :string;
+  title : string;
+  description :string;
+  createdBy?: string;
+  createdAt? :string
+}
 
 export default function Teacherplan() {
+   
+    const { user } = useAuthStore()
 
 
-
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<pln>({
     title: "",
     description: "",
   });
@@ -22,14 +35,34 @@ export default function Teacherplan() {
     }));
   };
 
+  const planMutation = useMutation({
+    mutationFn : async (data:pln)=>{
+       const response = await api.post('/plan', data);
+       return response.data
+    },
+    onSuccess : ()=>{
+      toast.success('you plan has saved successfully')
+    },
+    onError : (err)=>{
+       toast.error(extractErrorMessages(err))
+    }
+  })
   
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log("Plan Data:", formData);
+      if(!formData.title || !formData.description){
+        toast.error('please fill the inputs')
+        return
+      };
 
-   
+      // register plan 
+      planMutation.mutate({
+        title : formData.title,
+        description : formData.description,
+        createdBy : user?._id
+      })
 
     setFormData({
       title: "",

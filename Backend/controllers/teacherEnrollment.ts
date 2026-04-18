@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import teacherEnroll, { Iteachenrolment } from "../Model/teacherEnrollment";
+import { Types } from "mongoose";
 
 
 export const  teacherEnrolled = async (req:Request<{},{},Iteachenrolment>, res:Response, next:NextFunction)=>{
@@ -16,6 +17,91 @@ export const  teacherEnrolled = async (req:Request<{},{},Iteachenrolment>, res:R
   }
 }
 
+// get teacher enrolled his subjects 
+export const  getTeacherenroll= async (req:Request, res:Response, next:NextFunction)=>{
+  try {
+     
+    const { id } = req.params;
+
+     if (!id || Array.isArray(id)) {
+        throw new Error("Invalid id");
+        }
+
+         console.log('teacher enrollt')
+   const enrollsubject = await teacherEnroll.find({teacherId: id})
+     
+
+      return res.json(enrollsubject)
+  } catch (error) {
+    next(error)
+  }
+}
+
+// get teachers and his students he teaches 
+export const  getteacherhisStudent= async (req:Request, res:Response, next:NextFunction)=>{
+  try {
+     
+    const { id } = req.params;
+
+     if (!id || Array.isArray(id)) {
+        throw new Error("Invalid id");
+        }
+
+   const result = await teacherEnroll.aggregate([
+        {
+            $match: {
+            teacherId: new Types.ObjectId(id),
+            },
+        },
+        {
+            $lookup: {
+            from: "studentenrollments",
+            let: {
+                subjectId: "$subjectId",
+                grade: "$grade",
+                section: "$section",
+            },
+            pipeline: [
+                {
+                $match: {
+                    $expr: {
+                    $and: [
+                        { $eq: ["$subjectId", "$$subjectId"] },
+                        { $eq: ["$grade", "$$grade"] },
+                        { $eq: ["$section", "$$section"] },
+                    ],
+                    },
+                },
+                },
+                {
+                $count: "count",
+                },
+            ],
+            as: "studentsData",
+            },
+        },
+        {
+            $addFields: {
+            studentsCount: {
+                $ifNull: [{ $arrayElemAt: ["$studentsData.count", 0] }, 0],
+            },
+            },
+        },
+        {
+            $group: {
+            _id: null,
+            totalStudents: { $sum: "$studentsCount" },
+            },
+        },
+        ]);
+       
+     
+
+      return res.json(result)
+  } catch (error) {
+    next(error)
+  }
+}
 
 
 // get All teacher enrolled 

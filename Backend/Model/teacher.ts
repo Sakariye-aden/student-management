@@ -1,7 +1,7 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface Iteacher extends Document{
-    userId : typeof Schema.Types.ObjectId,
+    userId : Types.ObjectId;   // ✅ correct type,
     firstname : string,
     lastname  : string ,
     gender : string ,
@@ -12,7 +12,7 @@ export interface Iteacher extends Document{
 const teacherSchema = new Schema<Iteacher>({
     userId : {
             type: mongoose.Schema.Types.ObjectId,
-            ref:'User'
+            ref:'user'
     }, 
     firstname : {type:String, required: true},
     lastname : {type:String, required: true},

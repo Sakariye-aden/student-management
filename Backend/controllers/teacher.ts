@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import Teacher, { Iteacher } from "../Model/teacher";
 
 // register teacher 
@@ -23,8 +23,12 @@ export const getoneTeacher = async (req:Request, res:Response, next:NextFunction
 
     try {
         const { id }= req.params;
-
-        const oneTeacher = await Teacher.findById({_id:id});
+      
+        if (!id || Array.isArray(id)) {
+        throw new Error("Invalid id");
+        }
+      
+    const oneTeacher = await Teacher.findOne({ userId: id });
 
         return res.json(oneTeacher)
     } catch (error) {

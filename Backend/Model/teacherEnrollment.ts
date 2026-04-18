@@ -1,8 +1,8 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface Iteachenrolment extends Document{
-    subjectId: typeof Schema.Types.ObjectId,
-    teacherId: typeof Schema.Types.ObjectId,
+    subjectId: Types.ObjectId,
+    teacherId: Types.ObjectId,
     grade:string,
     section:string,
     year:number

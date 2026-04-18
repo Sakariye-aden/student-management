@@ -215,7 +215,7 @@ const Enrollments = () => {
   const { data: students } = useQuery({
     queryKey: ["students"],
     queryFn: async () => {
-      const response = await api.get("/student");
+      const response = await api.get("/student/All");
       return response.data;
     },
   });
