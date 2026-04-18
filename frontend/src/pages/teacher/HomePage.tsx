@@ -1,9 +1,8 @@
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react"
-import api from "../../lib/api/apiStore";
-import useAuthStore from "../../lib/store/useStore";
-import { Card, CardContent } from '../../components/ui/card';
 import { BookCheck, FolderArchive, UserCheck } from "lucide-react";
+import { useNavigate } from "react-router";
+import { Button } from "../../components/ui/button";
+import { Card, CardContent } from '../../components/ui/card';
 import {
   Empty,
   EmptyContent,
@@ -11,22 +10,13 @@ import {
   EmptyHeader,
   EmptyMedia,
   EmptyTitle,
-} from "../../components/ui/empty"
-import { Button } from "../../components/ui/button";
+} from "../../components/ui/empty";
+import api from "../../lib/api/apiStore";
+import useAuthStore from "../../lib/store/useStore";
 import type { pln } from "./plan";
-import { useNavigate } from "react-router";
 
  
 
-interface tchr {
-  _id?: string,
-  userId: string,
-  firstname: string,
-  lastname: string,
-  gender: string,
-  phone: number,
-  qualification: string
-}
 
 type enrol = {
   _id: string,
@@ -62,7 +52,7 @@ const TeacherHomePage = () => {
 
   const { user } = useAuthStore()
 
-  const [teacher, setTeacher] = useState<tchr | null>(null);
+  
 
   const navigate = useNavigate()
 
@@ -73,7 +63,6 @@ const TeacherHomePage = () => {
     queryFn: async () => {
       const response = await api.get(`/teacher/${user?._id}`);
       //  console.log('teacher Data', response.data);
-      setTeacher(response.data)
       return response.data
     }
   });
@@ -84,7 +73,6 @@ const TeacherHomePage = () => {
     queryFn: async () => {
       const response = await api.get(`/teacherenrollment`);
       //  console.log('teacher Enrolled', response.data);
-      setTeacher(response.data)
       return response.data
     }
   });
