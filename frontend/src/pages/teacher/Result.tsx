@@ -17,10 +17,11 @@ import {
   EmptyTitle,
 } from "../../components/ui/empty";
 import api from "../../lib/api/apiStore";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import useAuthStore from "../../lib/store/useStore";
 import { FolderArchive } from "lucide-react";
+import { extractErrorMessages } from "../../utility/errorUtility";
 
 
 
@@ -51,6 +52,15 @@ interface Enrollment {
   };
 }
 
+type rslt = {
+   subjectId: string;
+    studentId: string;
+    teacherId: string;
+    score : number ;
+    term : string ;
+    year : number ;
+}
+
 
 type StudentInputs = Record<string, Inpt>; // key = student._id
 
@@ -70,6 +80,7 @@ function TeacherResult() {
   const [term, setTerm] = useState("");
   const [formData, setFormData ]= useState<FormType>({})
   const [students , setStudents ]= useState([]);
+  const [Score , setScore ]=useState(0)
   
   const [inputData, setInputData ]=useState<StudentInputs>({})
 
@@ -106,6 +117,7 @@ function TeacherResult() {
       [field]: value,
     },
   }));
+  setScore(value)
 };
   
    //handle select 
@@ -129,20 +141,52 @@ function TeacherResult() {
       setStudents(data)
   }
 
+  // insert result 
+  const resultMutation = useMutation({
+    mutationFn : async (data:rslt)=>{
+       const response = await api.post('/result', data);
+       return response.data
+    },
+    onSuccess : ()=>{
+      toast.success('you have saved result successfully')
+    },
+    onError : (err)=>{
+       toast.error(extractErrorMessages(err))
+    }
+  })
+
+  //  handle save 
   const handleSave = (studentId : string) => {
     
+
+     if(!term || !Score){
+         toast.error('please select term and enter score ')
+        return
+     }
      
+    //  register result 
+    resultMutation.mutate({
+      subjectId : formData.subjectId as string,
+      studentId : studentId,
+      teacherId : user?._id as string,
+       score :Number(Score),
+       term: term,
+       year :  2026
+    })
+
     const payload = {
       subjectId : formData.subjectId,
       studentId : studentId,
        teacherId : user?._id,
-       grade :Number(grade),
-       section , 
+       score :Number(Score),
        type: term,
        year :  2026
     }
      console.log('payload', payload);
-    //  console.log('stdent',students);
+    
+
+    setTerm('');
+    setScore(0)
   };
 
    
