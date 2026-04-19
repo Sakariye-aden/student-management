@@ -99,7 +99,7 @@ const TeacherHomePage = () => {
   // get 
   const teacherhisSubject = teacherEnroll?.filter((data: enrol) => data.teacherId?._id == Teacher?._id);
 
-   
+   console.log('tchr ',teacherhisSubject);
 
   return (
     <div className="bg-card min-h-screen p-6 ">
@@ -126,10 +126,66 @@ const TeacherHomePage = () => {
           </CardContent>
         </Card>
       </div>
-
-
-      {/*teacher weakly design  */}
+   
       <div>
+        <h1 className="text-lg font-bold text-gray-700 my-3"> Subjects you teaches it </h1>
+        {teacherhisSubject?.length === 0 ? (
+          <Empty className="flex justify-center items-center">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <FolderArchive />
+              </EmptyMedia>
+              <EmptyTitle> No subjects </EmptyTitle>
+              <EmptyDescription>there is no subject you teaches  </EmptyDescription>
+            </EmptyHeader>
+            <EmptyContent>
+              <div className="flex gap-2">
+                <Button onClick={()=>navigate('plan')}>write your plan</Button>
+              </div>
+            </EmptyContent>
+          </Empty>
+        ) : (
+          <div>
+            <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
+              <table className="min-w-full border border-gray-200 rounded-lg shadow-md ">
+                <thead className="bg-gray-100 text-blue-600 sticky top-0">
+                  <tr>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      tchr.name
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                      subj.name
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                     grade
+                    </th>
+                    <th className="px-4 py-2 text-left text-sm font-semibold">
+                     section
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-200">
+                  {teacherhisSubject?.map((item: enrol) => (
+                    <tr
+                      key={item._id}
+                      className="hover:bg-blue-100 transition-colors duration-200 text-blue-500"
+                    >
+                      <td className="px-4 py-2 ">{item.teacherId.firstname}</td>
+                      <td className="px-4 py-2 ">{item.subjectId.name}</td>
+                      <td className="py-2 ">{item.grade}</td>
+                      <td className="py-2 ">{item.section}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+
+            </div>
+          </div>
+        )
+        }
+      </div>
+      {/*teacher weakly design  */}
+      <div className="my-4">
         <h1 className="text-lg font-bold text-gray-700 my-3">Recent Plans </h1>
         {Plan?.length === 0 ? (
           <Empty className="flex justify-center items-center">

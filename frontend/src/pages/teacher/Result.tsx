@@ -56,6 +56,8 @@ type rslt = {
    subjectId: string;
     studentId: string;
     teacherId: string;
+    grade? : number ;
+    section? : string ;
     score : number ;
     term : string ;
     year : number ;
@@ -159,7 +161,7 @@ function TeacherResult() {
   const handleSave = (studentId : string) => {
     
 
-     if(!term || !Score){
+     if(!term || !Score || !grade || !section){
          toast.error('please select term and enter score ')
         return
      }
@@ -169,6 +171,8 @@ function TeacherResult() {
       subjectId : formData.subjectId as string,
       studentId : studentId,
       teacherId : user?._id as string,
+      grade : Number(grade),
+      section : section,
        score :Number(Score),
        term: term,
        year :  2026

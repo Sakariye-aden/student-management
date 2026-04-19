@@ -4,6 +4,8 @@ export interface Iresult extends Document{
     subjectId: typeof Schema.Types.ObjectId,
     studentId: typeof Schema.Types.ObjectId,
     teacherId: typeof Schema.Types.ObjectId,
+    grade: number;
+    section : string
     score:number,
     type:"midterm" | "finalterm",
     year:number
@@ -22,6 +24,8 @@ const resultSchema = new Schema<Iresult>({
                    type: mongoose.Schema.Types.ObjectId,
                    ref:'Teacher'
            },
+    grade:{type:Number, required:true},     
+    section:{type:String, required:true},     
     score:{type:Number, required:true},     
     type:{type:String , enum:["midterm" , "finalterm"], default:"midterm"},
     year:{type:Number , required:true}     

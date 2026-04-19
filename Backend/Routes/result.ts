@@ -1,9 +1,11 @@
 import { Router } from 'express';
-import { enteringResult } from '../controllers/result';
+import { calculateResult, enteringResult } from '../controllers/result';
+import { Protect } from '../middleware/protect';
 
 
 const Route = Router();
 
-Route.post('/', enteringResult)
+Route.get('/', Protect , calculateResult)
+Route.post('/',Protect,  enteringResult)
 
 export default Route
