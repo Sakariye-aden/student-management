@@ -57,7 +57,6 @@ function TeacherAttendance() {
     queryKey: ["teachers",page],
     queryFn: async () => {
          const response = await api.get(`/teacher/All?page=${page}&limit=10`);
-         console.log("teacher pgn:",response.data);
          return response.data;
        },
         // enabled :false,

@@ -251,7 +251,7 @@ const VpStudents = () => {
     queryKey: ["users", userpage],
     queryFn: async () => {
        const response = await api.get(`/student/Auth?role=student&page=${userpage}&limit=10`);
-        console.log('user pgt ', response.data);
+        // console.log('user pgt ', response.data);
        return response.data ;
     },
      placeholderData: (prev) => prev, // replaces keepPreviousData in v5
@@ -262,7 +262,7 @@ const VpStudents = () => {
     queryKey: ["students",page],
     queryFn: async () => {
       const response = await api.get(`/student?page=${page}&limit=10`);
-      console.log("stdnt pgn:",response.data);
+      // console.log("stdnt pgn:",response.data);
       return response.data;
     },
    placeholderData: (prev) => prev,   // keeps old data while fetching new

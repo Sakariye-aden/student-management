@@ -53,7 +53,6 @@ const DeanHomePage = () => {
            queryKey: ['attendance'],
            queryFn : async () => {
               const response = await api.get('/attendance/student');
-               console.log('std ateendance ', response.data);
                return response.data
             }
          })

@@ -173,7 +173,7 @@ interface StudentResult {
               </tr>
             </thead>
             <tbody>
-              {results.map((student: StudentResult) => (
+              {results?.map((student: StudentResult) => (
                 <tr key={student.studentId} className="hover:bg-gray-50">
                   <td className="border border-gray-300 px-4 py-2">
                     {student.rank}

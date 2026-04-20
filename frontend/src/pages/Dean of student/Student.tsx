@@ -62,7 +62,6 @@ function StudentAttendance() {
     queryKey: ["student"],
     queryFn: async () => {
       const response = await api.get(`/student/user?grade=${grade}&section=${section}`);
-        // console.log('data Students Grade', response.data);
       return response.data;
     },
     enabled :false
