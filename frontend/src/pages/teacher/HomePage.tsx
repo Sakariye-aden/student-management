@@ -99,11 +99,11 @@ const TeacherHomePage = () => {
   // get 
   const teacherhisSubject = teacherEnroll?.filter((data: enrol) => data.teacherId?._id == Teacher?._id);
 
-   console.log('tchr ',teacherhisSubject);
+  
 
   return (
     <div className="bg-card min-h-screen p-6 ">
-
+       <h1 className="text-2xl font-medium text-blue-600">Hello, {user?.name} 👏</h1>
       <div className="flex space-x-4 my-3">
         <Card className="w-full flex bg-linear-to-r from-rose-500 to-orange-400 rounded-lg">
           <CardContent className="flex flex-col text-white">

@@ -19,6 +19,8 @@ import Roles from "./pages/vice principle/Roles";
 import VpStudents from "./pages/vice principle/Students";
 import VpSubjects from "./pages/vice principle/Subjects";
 import VpTeacher from "./pages/vice principle/Teacher";
+import StudentDashboard from "./pages/student/Dashboard";
+import HomeDashboardStudent from "./pages/student/HomeDashboard";
 
 function App() {
   return (
@@ -78,6 +80,16 @@ function App() {
           <Route path="student" element={<StudentAttendance/>} />
           <Route path="teacher" element={<TeacherAttendance />} />
           {/* <Route path="mysubjects" element={<Mysubject/>} /> */}
+        </Route>
+      </Route>
+      {/* student */}
+     <Route
+        path="/student"
+        element={<RoleProtectedRoute allowedRoles={["student"]} />}
+      >
+        <Route   element={<StudentDashboard/>}>
+           <Route index element={<HomeDashboardStudent />} />
+       
         </Route>
       </Route>
 

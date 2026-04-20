@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import Student, { Istudent } from "../Model/student";
+import { Types } from "mongoose";
 
 // register student
 export const registerStudent = async (req:Request<{},{},Istudent>, res:Response , next:NextFunction)=>{
@@ -25,7 +26,11 @@ export const getoneStudentinfo = async (req:Request, res:Response, next:NextFunc
    try {
       const { id } = req.params;
    
-      const onestudent = await Student.findById({_id:id});
+       if (!id || Array.isArray(id)) {
+        throw new Error("Invalid id");
+        }
+      
+      const onestudent = await Student.findOne({userId :new Types.ObjectId(id)});
 
        if(!onestudent){
          return res.status(400).json({

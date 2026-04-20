@@ -1,7 +1,7 @@
-import mongoose, { Document, Schema } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
 
 export interface Istudent extends Document{
-    userId : typeof Schema.Types.ObjectId,
+    userId : Types.ObjectId,
     firstname : string,
     lastname  : string ,
     gender : string ,
