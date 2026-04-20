@@ -7,8 +7,8 @@ const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   if (isAuthenticated && user ) {
 
       const roleRoutes: Record<string, string> = {
-          principle: "/principal",
-          "vice principle": "/vice-principal",
+          principal: "/principal",
+          "vice principal": "/vice-principal",
           "dean of students": "/dean",
           teacher: "/teacher",
           student: "/student",

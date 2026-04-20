@@ -21,6 +21,8 @@ import VpSubjects from "./pages/vice principle/Subjects";
 import VpTeacher from "./pages/vice principle/Teacher";
 import StudentDashboard from "./pages/student/Dashboard";
 import HomeDashboardStudent from "./pages/student/HomeDashboard";
+import PDashboard from "./pages/principal/Dashboard";
+import HomePrincipalDashboard from "./pages/principal/HomeDashboard";
 
 function App() {
   return (
@@ -44,9 +46,21 @@ function App() {
 
       {/* TODO:  add protected route */}
       
+      {/* principal */}
+      <Route
+        path="/principal"
+        element={<RoleProtectedRoute allowedRoles={["principal"]} />}
+       >
+        <Route   element={<PDashboard/>}>
+           <Route index element={<HomePrincipalDashboard/>} />
+            <Route path="roles" element={<Roles/>} />
+        </Route>
+       </Route>
+
+      {/* vice principle  */}
       <Route
         path="/vice-principal"
-        element={<RoleProtectedRoute allowedRoles={["vice principle"]} />}
+        element={<RoleProtectedRoute allowedRoles={["vice principal"]} />}
       >
         <Route element={<ViceDashboard />}>
           <Route index element={<HomePage />} />
@@ -92,6 +106,7 @@ function App() {
        
         </Route>
       </Route>
+     
 
       <Route path="/" element={<Navigate to="/login" replace />} />
     </Routes>
