@@ -134,10 +134,12 @@ const LoginForm = () => {
               />
             </div>
 
-            <Button className="p-2 rounded-md">
+            <Button className="p-2 rounded-md"
+            //  disabled={error?.message?.error == "too"}
+            >
               {loginMutation.isPending ? (
                 <span className="flex justify-center items-center gap-2">
-                  <Loader className="animate-spin" /> sign in
+                  <Loader className="animate-spin" /> signing in...
                 </span>
               ) : (
                 "sign in"

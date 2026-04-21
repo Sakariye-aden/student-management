@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { AllUsers, deleteUser, getLimitUser, getMe, loginUser, logoutUser, registerUser } from '../controllers/users';
 import { Protect } from '../middleware/protect';
+import loginLimiter from '../middleware/RateLimit';
 
 const Route = Router();
 
@@ -13,7 +14,7 @@ Route.get('/me', Protect, getMe);
 // get all users 
 Route.get('/all', Protect, AllUsers);
 Route.post('/register', registerUser);
-Route.post('/login',loginUser)
+Route.post('/login', loginLimiter ,loginUser)
 Route.post('/logout', logoutUser);
 Route.delete('/user/:id', Protect , deleteUser)
 

@@ -93,7 +93,7 @@ interface StudentResult {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Student Results</h1>
-      <div className="flex flex-col gap-4  sm:flex-row  ">
+      <div className="flex flex-col gap-4  sm:flex-row  my-3">
         <Select onValueChange={setGrade}>
           <SelectTrigger className="w-full rounded-md border border-input bg-background px-3 py-4 text-sm text-foreground placeholder:text-muted-foreground">
             <SelectValue placeholder="Select Grade" />
@@ -154,7 +154,7 @@ interface StudentResult {
           </Empty>
         </div>
       ) : (
-        <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md">
+        <div className="max-h-96 overflow-y-auto border border-gray-200 rounded-lg shadow-md mt-6">
           <table className="w-full border-collapse border border-gray-300">
             <thead>
               <tr className="bg-gray-100">

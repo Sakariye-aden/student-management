@@ -44,7 +44,7 @@ const HomePage = () => {
      <div className="bg-card h-min-screen p-4">
       <h1 className="text-2xl font-medium text-blue-600">Hello, {user?.name} 👏</h1>
       {/* cards */}
-      <div>
+      <div className='mt-10'>
         <div className="flex space-x-4 my-3">
           <Card className="w-full flex bg-linear-to-r from-rose-500 to-orange-400 rounded-lg">
             <CardContent className="flex flex-col text-white">  
@@ -76,13 +76,7 @@ const HomePage = () => {
           </Card>
         </div>
       </div>
-      {/*last transations  */}
-      <div className="bg-background p-4 shadow-lg mt-8 rounded-md">
-        <h1 className="text-xl font-medium border-b pb-2">
-          Recent Transactions
-        </h1>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vitae natus inventore aliquid! Fugit, neque hic doloremque, architecto sapiente rem sit aut velit impedit odio incidunt nulla dolorum placeat illum veritatis vero a similique tenetur.</p>
-      </div>
+      
     </div>    
   )
 }
