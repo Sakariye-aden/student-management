@@ -16,7 +16,7 @@ Route.get('/Auth', Protect , getStudentRolebyLimit)
 // get all students 
 Route.get('/All', Protect , getAllStudents);
 Route.get('/:id', Protect, getoneStudentinfo);
-Route.post('/', Protect, authorizeRole("vice principle","principle"), registerStudent);
+Route.post('/', Protect, authorizeRole("vice principal","principal"), registerStudent);
 Route.put('/:id',Protect, updateStudentinfo)
 Route.delete('/:id',Protect, deleteStudentinfo)
 

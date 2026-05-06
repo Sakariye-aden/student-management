@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express"
 
-type role = "principle" | "vice principle"| "dean of student" | "teacher"| "student";
+type role = "principal" | "vice principal"| "dean of student" | "teacher"| "student";
 
 
 export const authorizeRole = (...roles:role[])=>{
