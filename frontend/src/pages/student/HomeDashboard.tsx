@@ -49,14 +49,15 @@ const HomeDashboardStudent = () => {
       });
 
     // get all your result  
-      const { data: result , isLoading : resultLoad, refetch } = useQuery({
-        queryKey: ['result'],
+      const { data: result , isLoading : resultLoad,  } = useQuery({
+        queryKey: ['result',studentId, term],
         queryFn: async () => {
           const response = await api.get(`/result/student?id=${studentId?._id}&type=${term}`);
           
+          console.log("term ",response.data);
           return response.data
         }
-      });
+      }); 
 
 
       if(studentLoad || resultLoad){
@@ -71,19 +72,17 @@ const HomeDashboardStudent = () => {
        const Handlemidterm =  ()=>{
           
           setTerm("midterm");
-           refetch()
+          //  refetch()
         }
     
     // finalterm
         const HandleFinalterm = ()=>{
           
           setTerm("finalterm");
-           refetch();
+          //  refetch();
         }
-
-      
-   
-
+  
+         console.log('term ',term)
 
   return (
     <div className="bg-card h-min-screen p-4">

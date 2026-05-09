@@ -27,7 +27,7 @@ const resultSchema = new Schema<Iresult>({
     grade:{type:Number, required:true},     
     section:{type:String, required:true},     
     score:{type:Number, required:true},     
-    type:{type:String , enum:["midterm" , "finalterm"], default:"midterm"},
+    type:{type:String , enum:["midterm" , "finalterm"]},
     year:{type:Number , required:true}     
 })
 

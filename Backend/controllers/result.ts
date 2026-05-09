@@ -2,10 +2,10 @@ import {Request, Response , NextFunction } from "express";
 import Result, { Iresult } from "../Model/result";
 import { Types } from "mongoose";
 
-interface resultParams {
-  id : string ;
-  type : string ;
-}
+// interface resultParams {
+//   id : string ;
+//   type : string ;
+// }
 
 export const enteringResult = async (req:Request<{},{},Iresult>, res:Response , next:NextFunction)=>{
 
@@ -99,40 +99,90 @@ export const calculateResult = async (req:Request, res:Response , next:NextFunct
 
 // get students own result 
 
-export const oneStudentResult = async (req:Request, res:Response, next:NextFunction)=>{
+// export const oneStudentResult = async (req:Request, res:Response, next:NextFunction)=>{
 
-   try {
+//    try {
      
       
 
-       const { id , type }= req.query as unknown as resultParams
+//        const { id , type }= req.query as unknown as resultParams
       
-       const total = await Result.aggregate([
-         {
-           $match : {studentId : new Types.ObjectId(id) , type}
-         },
-         {
-          $lookup :{
-            from :'subjects',
-            localField : "subjectId",
-            foreignField : "_id",
-            as : "subject"
-          }
-         },
-         {
-          $unwind :"$subject"
-         },
-         {
-          $project : {
-            score : 1,
-            subjectName : "$subject.name"
-          }
-         }
-       ])
+//        const total = await Result.aggregate([
+//          {
+//            $match : {studentId : new Types.ObjectId(id) , 
+//             type: type // "midterm" or "finalterm"
+//            }
+//          },
+//          {
+//           $lookup :{
+//             from :'subjects',
+//             localField : "subjectId",
+//             foreignField : "_id",
+//             as : "subject"
+//           }
+//          },
+//          {
+//           $unwind :"$subject"
+//          },
+//          {
+//           $project : {
+//              _id: 0,
+//           subjectName: "$subject.name",
+//           score: 1,
+//           term: "$type"
+//           }
+//          }
+//        ])
 
-       return res.json(total)
+//        return res.json(total)
 
-   } catch (error) {
-     next(error)
-   }
-}
+//    } catch (error) {
+//      next(error)
+//    }
+// }
+
+export const oneStudentResult = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+
+    const { id, type } = req.query;
+
+    const results = await Result.aggregate([
+      {
+        $match: {
+          studentId: new Types.ObjectId(id as string),
+          type: type // "midterm" or "finalterm"
+        }
+      },
+      {
+        $group: {
+          _id: "$subjectId",
+          score: { $first: "$score" } // take one score per subject
+        }
+      },
+      {
+        $lookup: {
+          from: "subjects",
+          localField: "_id",
+          foreignField: "_id",
+          as: "subject"
+        }
+      },
+      {
+        $unwind: "$subject"
+      },
+      {
+        $project: {
+          _id: 0,
+          subjectName: "$subject.name",
+          score: 1,
+          term: type
+        }
+      }
+    ]);
+
+    res.json(results);
+
+  } catch (error) {
+    next(error);
+  }
+};

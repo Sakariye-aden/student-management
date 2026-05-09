@@ -59,7 +59,7 @@ type rslt = {
     grade? : number ;
     section? : string ;
     score : number ;
-    term : string ;
+    type : string ;
     year : number ;
 }
 
@@ -174,7 +174,7 @@ function TeacherResult() {
       grade : Number(grade),
       section : section,
        score :Number(Score),
-       term: term,
+       type: term,
        year :  2026
     })
 
